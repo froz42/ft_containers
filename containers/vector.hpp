@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:53:40 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/01 20:22:33 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/01 22:38:12 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 namespace ft
 {
-	template <typename T, class Alloc = std::allocator<T>>
+	template <typename T, class Alloc = std::allocator<T> >
 	class vector
 	{
 	public:
@@ -33,7 +33,7 @@ namespace ft
 		typedef typename allocator_type::pointer pointer;				  // T*
 		typedef typename allocator_type::const_pointer const_pointer;	  // const T*
 		typedef size_t size_type;										  // unsigned int
-		typedef ptrdiff_t difference_type;								  // int
+		typedef std::ptrdiff_t difference_type;								  // int
 
 		// Iterators
 		typedef ft::VectorIterator<T> iterator;

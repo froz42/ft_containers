@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/14 10:00:31 by tmatis            #+#    #+#              #
-#    Updated: 2021/09/01 19:33:08 by tmatis           ###   ########.fr        #
+#    Updated: 2021/09/01 22:37:26 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,19 +27,19 @@ DATE	= 01/09/2021
 
 SRCS_PATH		= ./
 
-INCLUDE_PATH	= ./include
+INCLUDE_PATH	= ./
 
 SRCS			=
-MAIN_CHECKER	= checker/main.cpp
-MAIN_TESTS 		= tests/main.cpp
+SRCS_CHECKER	= checker/main.cpp
+SRCS_TESTS 		= tests/main.cpp
 
 ################################################################################
 #                                 Makefile logic                               #
 ################################################################################
 
 
-OBJ_MAIN_CHECKER	= $(addprefix objs/, ${MAIN_CHECKER:.cpp=.o})
-OBJ_MAIN_TESTS		= $(addprefix objs/, ${MAIN_TESTS:.cpp=.o})
+OBJ_CHECKER	= $(addprefix objs/, ${SRCS_CHECKER:.cpp=.o})
+OBJ_TESTS		= $(addprefix objs/, ${SRCS_TESTS:.cpp=.o})
 OBJS				= $(addprefix objs/, ${SRCS:.cpp=.o})
 
 COM_COLOR   = \033[0;34m
@@ -86,16 +86,16 @@ header:
 	@printf "%b" "$(OBJ_COLOR)Date: 	$(WARN_COLOR)$(DATE)\n\033[m"
 	@echo
 
-bin_stl: 	${OBJS} ${OBJ_MAIN_TESTS}
-			@$(call run_and_test,$(CC) $(CFLAGS) -I$(INCLUDE_PATH) -o $@ ${OBJS} ${OBJ_MAIN_TESTS})
+bin_stl: 	
+			@$(call run_and_test,$(CC) $(CFLAGS) -D TESTED_NAMESPACE=std -o $@ ${SRCS_TESTS})
 
-bin_ft: 	${OBJS} ${OBJ_MAIN_TESTS}
-			@$(call run_and_test,$(CC) $(CFLAGS) -I$(INCLUDE_PATH) -o $@ ${OBJS} ${OBJ_MAIN_TESTS})
+bin_ft: 	
+			@$(call run_and_test,$(CC) $(CFLAGS) -D TESTED_NAMESPACE=ft -o $@ ${SRCS_TESTS})
 
-./bin_test:	${OBJS} ${OBJ_MAIN_CHECKER}
-		@$(call run_and_test,$(CC) $(CFLAGS) -I$(INCLUDE_PATH) -o $@ ${OBJS} ${OBJ_MAIN_CHECKER})
+./bin_test:	${OBJS} ${OBJ_CHECKER}
+		@$(call run_and_test,$(CC) $(CFLAGS) -I$(INCLUDE_PATH) -o $@ ${OBJS} ${OBJ_CHECKER})
 	
-run: header bin_stl bin_ft ./bin_test
+run: header fclean bin_stl bin_ft ./bin_test
 		@./bin_ft > ./stl.out
 		@./bin_stl > ./ft.out
 		@./bin_test

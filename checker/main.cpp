@@ -6,12 +6,13 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 18:21:24 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/01 19:29:42 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/01 22:51:50 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <string>
 
 
@@ -25,7 +26,7 @@ void test_module(
 	//fancy blue output
 	std::cout << "\033[1;36m";
 	//cyan output
-	std::cout << "   >>> \033[1;34m" << module_name << ":	";
+	std::cout << "   >>> \033[1;34m" << module_name << " ";
 	while (std::getline(file1, line1) && std::getline(file2, line2)
 	&& line1 != "<<<")
 	{
@@ -33,10 +34,11 @@ void test_module(
 		{
 			if (!ko)
 			{
-				std::cout << "\033[0;31m[KO]\033[0m" << std::endl;
+				std::cout << std::right << std::setw(53 - module_name.length())
+					<< "\033[0;31m[KO]\033[0m" << std::endl;
 				ko = true;
 			}
-			std::cout << "	" << "\"\033[0;31m" << line1 << "\033[0m\"";
+			std::cout << "\"\033[0;31m" << line1 << "\033[0m\"";
 			std::cout << " != ";
 			std::cout << "\"\033[0;31m" << line2 << "\033[0m\"";
 			std::cout << std::endl;
@@ -44,7 +46,8 @@ void test_module(
 	}
 	if (!ko)
 	{
-		std::cout << "\033[0;32m[OK]\033[0m" << std::endl;
+		std::cout << std::right << std::setw(53 - module_name.length())
+			<< "\033[0;32m[OK]\033[0m" << std::endl;
 		test_ok++;
 	}
 }
