@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/14 10:00:31 by tmatis            #+#    #+#              #
-#    Updated: 2021/09/01 14:53:33 by tmatis           ###   ########.fr        #
+#    Updated: 2021/09/01 19:33:08 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@
 
 NAME	= ft_containers
 CC 		= clang++
-CFLAGS	= -Wall -Werror -Wextra -std=c++98 -pedantic
+CFLAGS	= -Wall -Werror -Wextra -std=c++98
 AUTHOR	= tmatis
 DATE	= 01/09/2021
 
@@ -25,19 +25,22 @@ DATE	= 01/09/2021
 #                                 PROGRAM'S SRCS                               #
 ################################################################################
 
-SRCS_PATH		= ./src
+SRCS_PATH		= ./
 
 INCLUDE_PATH	= ./include
-SRCS		=
-MAIN		= main.cpp
+
+SRCS			=
+MAIN_CHECKER	= checker/main.cpp
+MAIN_TESTS 		= tests/main.cpp
 
 ################################################################################
 #                                 Makefile logic                               #
 ################################################################################
 
 
-OBJ_MAIN	= $(addprefix objs/, ${MAIN:.cpp=.o})
-OBJS		= $(addprefix objs/, ${SRCS:.cpp=.o})
+OBJ_MAIN_CHECKER	= $(addprefix objs/, ${MAIN_CHECKER:.cpp=.o})
+OBJ_MAIN_TESTS		= $(addprefix objs/, ${MAIN_TESTS:.cpp=.o})
+OBJS				= $(addprefix objs/, ${SRCS:.cpp=.o})
 
 COM_COLOR   = \033[0;34m
 OBJ_COLOR   = \033[0;36m
@@ -67,7 +70,7 @@ rm -f $@.log; \
 exit $$RESULT
 endef
 
-all:	header $(NAME)
+all:	header bin_ft bin_stl
 
 header:
 	@printf "%b" "$(OK_COLOR)"
@@ -83,8 +86,19 @@ header:
 	@printf "%b" "$(OBJ_COLOR)Date: 	$(WARN_COLOR)$(DATE)\n\033[m"
 	@echo
 
-$(NAME): 	${OBJS} ${OBJ_MAIN}
-			@$(call run_and_test,$(CC) $(CFLAGS) -I$(INCLUDE_PATH) -o $@ ${OBJS} ${OBJ_MAIN})
+bin_stl: 	${OBJS} ${OBJ_MAIN_TESTS}
+			@$(call run_and_test,$(CC) $(CFLAGS) -I$(INCLUDE_PATH) -o $@ ${OBJS} ${OBJ_MAIN_TESTS})
+
+bin_ft: 	${OBJS} ${OBJ_MAIN_TESTS}
+			@$(call run_and_test,$(CC) $(CFLAGS) -I$(INCLUDE_PATH) -o $@ ${OBJS} ${OBJ_MAIN_TESTS})
+
+./bin_test:	${OBJS} ${OBJ_MAIN_CHECKER}
+		@$(call run_and_test,$(CC) $(CFLAGS) -I$(INCLUDE_PATH) -o $@ ${OBJS} ${OBJ_MAIN_CHECKER})
+	
+run: header bin_stl bin_ft ./bin_test
+		@./bin_ft > ./stl.out
+		@./bin_stl > ./ft.out
+		@./bin_test
 
 
 objs/%.o: 	$(SRCS_PATH)/%.cpp
@@ -92,11 +106,11 @@ objs/%.o: 	$(SRCS_PATH)/%.cpp
 			@$(call run_and_test,$(CC) $(CFLAGS) -c $< -o $@ -I$(INCLUDE_PATH))
 
 clean:		header
-			@rm -rf objs objs_tests
+			@rm -rf objs objs_tests ft.out stl.out
 			@printf "%-53b%b" "$(COM_COLOR)clean:" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"
 
 fclean:		header clean
-			@rm -rf $(NAME)
+			@rm -rf ./verif ./bin_ft ./bin_stl ./bin_test
 			@rm -rf $(TEST_NAME)
 			@printf "%-53b%b" "$(COM_COLOR)fclean:" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"
 

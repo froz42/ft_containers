@@ -1,0 +1,5 @@
+*objs/
+*.vscode/
+*.out
+*.o
+bin_*
