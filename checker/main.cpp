@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 18:21:24 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/01 22:51:50 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/01 22:54:34 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,5 @@ int main(void)
 		std::cout << "\033[0;32m" << test_ok << "/" << test_count << "\033[0m" << std::endl;
 	else
 		std::cout << "\033[0;31m" << test_ok << "/" << test_count << "\033[0m" << std::endl;
-
+	return (test_ok == test_count ? 0 : 1);
 }
