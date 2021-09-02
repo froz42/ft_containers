@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:53:40 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/02 13:33:07 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/02 14:32:29 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,11 +164,28 @@ namespace ft
 					_alloc.construct(&tmp[i], _data[i]);
 				for (size_type i = 0; i < _size; i++)
 					_alloc.destroy(&_data[i]);
+				_alloc.deallocate(_data, _capacity);
 				_capacity = n;
 				_data = tmp;
 			}
 		}
-
+		void resize (size_type n, value_type val = value_type())
+		{
+			if (n > _capacity)
+				this->reserve(n);
+			if (n > _size)
+			{
+				for (size_type i = _size; i < n; i++)
+					_alloc.construct(&_data[i], val);
+				_size = n;
+			}
+			else if (n < _size)
+			{
+				for (size_type i = n; i < _size; i++)
+					_alloc.destroy(&_data[i]);
+				_size = n;
+			}
+		}
 	private:
 		allocator_type _alloc;
 		size_type _size;
