@@ -1,20 +1,20 @@
 ## TODO
 
 [https://www.cplusplus.com/reference/vector/vector/](https://www.cplusplus.com/reference/vector/vector/)
- - [ ] constructor tested: [ ]
- - [ ] destructor tested: [ ]
- - [ ]  operator = tested: [ ]
+ - [x] constructor tested: [ ]
+ - [x] destructor tested: [ ]
+ - [x]  operator = tested: [ ]
 
- - [ ]  begin (with const) tested: [ ]
- - [ ]  end  (with const) tested: [ ]
- - [ ]  rbegin (with const) tested: [ ]
- - [ ] rend  (with const) tested: [ ]
+ - [x]  begin (with const) tested: [ ]
+ - [x]  end  (with const) tested: [ ]
+ - [x]  rbegin (with const) tested: [ ]
+ - [x] rend  (with const) tested: [ ]
  
- - [ ] size tested tested: [ ]
- - [ ]  max_size tested tested: [ ]
- - [ ]  resize tested tested: [ ]
- - [ ]   capacity tested: [ ]
- - [ ]  reserve tested: [ ]
+ - [x] size tested tested: [ ]
+ - [x]  max_size tested tested: [ ]
+ - [x]  resize tested tested: [ ]
+ - [x]   capacity tested: [ ]
+ - [x]  reserve tested: [ ]
  
  - [ ]  operator[] tested: [ ]
  - [ ]  at tested: [ ]

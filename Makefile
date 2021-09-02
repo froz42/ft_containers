@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/14 10:00:31 by tmatis            #+#    #+#              #
-#    Updated: 2021/09/01 22:37:26 by tmatis           ###   ########.fr        #
+#    Updated: 2021/09/02 13:25:33 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ INCLUDE_PATH	= ./
 
 SRCS			=
 SRCS_CHECKER	= checker/main.cpp
-SRCS_TESTS 		= tests/main.cpp
+SRCS_TESTS 		= tests/main.cpp tests/test_vector.cpp
 
 ################################################################################
 #                                 Makefile logic                               #

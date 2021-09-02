@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:53:40 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/01 22:38:12 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/02 13:33:07 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,33 @@ namespace ft
 				_alloc.construct(&_data[i], *(first + i));
 		}
 
+		vector (const vector& x) : _alloc(x._alloc), _size(x._size), _capacity(x._capacity), _data(NULL)
+		{
+			this->_data = _alloc.allocate(_capacity);
+			for (size_type i = 0; i < _size; i++)
+				_alloc.construct(&_data[i], x._data[i]);
+		}
+
 		// Destructor
 		virtual ~vector(void){
 			this->clear();
 			if (_data)
 				_alloc.deallocate(_data, _capacity);
 		};
+
+		vector& operator=(const vector& x)
+		{
+			if (this != &x)
+			{
+				this->clear();
+				this->_size = x._size;
+				this->_capacity = x._capacity;
+				this->_data = _alloc.allocate(_capacity);
+				for (size_type i = 0; i < _size; i++)
+					_alloc.construct(&_data[i], x._data[i]);
+			}
+			return *this;
+		}
 
 		size_type size(void) const
 		{
@@ -86,6 +107,39 @@ namespace ft
 		size_type capacity(void) const
 		{
 			return (_capacity);
+		}
+
+		iterator begin(void)
+		{
+			return iterator(_data);
+		}
+		iterator end(void)
+		{
+			return iterator(_data + _size);
+		}
+		reverse_iterator rbegin(void)
+		{
+			return reverse_iterator(_data + _size - 1);
+		}
+		reverse_iterator rend(void)
+		{
+			return reverse_iterator(_data - 1);
+		}
+		const_iterator begin(void) const
+		{
+			return const_iterator(_data);
+		}
+		const_iterator end(void) const
+		{
+			return const_iterator(_data + _size);
+		}
+		const_reverse_iterator rbegin(void) const
+		{
+			return const_reverse_iterator(_data + _size - 1);
+		}
+		const_reverse_iterator rend(void) const
+		{
+			return const_reverse_iterator(_data - 1);
 		}
 
 		bool empty(void) const
