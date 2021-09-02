@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:53:40 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/02 14:32:29 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/02 14:56:48 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,42 @@ namespace ft
 					_alloc.destroy(&_data[i]);
 				_size = n;
 			}
+		}
+		reference operator[](size_type n)
+		{
+			return _data[n];
+		}
+		const_reference operator[](size_type n) const
+		{
+			return _data[n];
+		}
+		reference at(size_type n)
+		{
+			if (n >= _size)
+				throw std::out_of_range("out of range");
+			return _data[n];
+		}
+		const_reference at(size_type n) const
+		{
+			if (n >= _size)
+				throw std::out_of_range("out of range");
+			return _data[n];
+		}
+		reference front(void)
+		{
+			return _data[0];
+		}
+		const_reference front(void) const
+		{
+			return _data[0];
+		}
+		reference back(void)
+		{
+			return _data[_size - 1];
+		}
+		const_reference back(void) const
+		{
+			return _data[_size - 1];
 		}
 	private:
 		allocator_type _alloc;

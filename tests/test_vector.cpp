@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 13:23:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/02 14:47:17 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/02 15:05:09 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,24 @@ void test_empty_vector(void)
 	module_test("[empty] vector::clear", v.size());
 	module_test("[empty] vector::capacity after clear", v.capacity());
 	module_test("[empty] vector::content after clear", string_vector(v));
+	module_test("[empty] vector::empty after clear", v.empty());
+	v.resize(10, 42);
+	module_test("[empty] vector::operator[]", v[0]);
+	module_test("[empty] vector::operator[]", v[9]);
+	module_test("[empty] vector::at", v.at(0));
+	module_head("[empty] vector::at (exept)");
+	try
+	{
+		v.at(15);
+		std::cout << "FAILED" << std::endl;
+	}
+	catch (std::out_of_range &e)
+	{
+		std::cout << "OK" << std::endl;
+	}
+	module_foot();
+	module_test("[empty] vector::front", v.front());
+	module_test("[empty] vector::back", v.back());
 }
 
 void test_vector(void)
