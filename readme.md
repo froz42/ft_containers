@@ -16,10 +16,10 @@
  - [x]   capacity tested: [ ]
  - [x]  reserve tested: [ ]
  
- - [ ]  operator[] tested: [ ]
- - [ ]  at tested: [ ]
- - [ ] front tested: [ ]
- - [ ] back tested: [ ]
+ - [x]  operator[] tested: [ ]
+ - [x]  at tested: [ ]
+ - [x] front tested: [ ]
+ - [x] back tested: [ ]
  
  - [ ]  assign tested: [ ]
  - [ ]  push_back tested: [ ]
