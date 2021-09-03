@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:53:40 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/02 15:10:26 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/03 22:22:07 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "VectorReverseIterator.hpp"
 #include "VectorConstIterator.hpp"
 #include "VectorConstReverseIterator.hpp"
+#include <unistd.h>
 
 namespace ft
 {
@@ -68,9 +69,12 @@ namespace ft
 
 		vector (const vector& x) : _alloc(x._alloc), _size(x._size), _capacity(x._capacity), _data(NULL)
 		{
-			this->_data = _alloc.allocate(_capacity);
-			for (size_type i = 0; i < _size; i++)
-				_alloc.construct(&_data[i], x._data[i]);
+			if (x._data)
+			{
+				this->_data = _alloc.allocate(_capacity);
+				for (size_type i = 0; i < _size; i++)
+					_alloc.construct(&_data[i], x._data[i]);
+			}
 		}
 
 		// Destructor

@@ -1,40 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.hpp                                           :+:      :+:    :+:   */
+/*   random_access_iterator.hpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/02 13:17:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/03 16:36:38 by tmatis           ###   ########.fr       */
+/*   Created: 2021/09/03 18:49:56 by tmatis            #+#    #+#             */
+/*   Updated: 2021/09/03 19:43:52 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef RANDOM_ACCESS_ITERATOR_HPP
+# define RANDOM_ACCESS_ITERATOR_HPP
 
+# include "iterator_traits.hpp"
 
-#ifndef TEST_HPP
-# define TEST_HPP
-
-#include <iostream>
-#include "../containers/ft.hpp"
-#include "test.hpp"
-#include <vector>
-
-#ifndef TESTED_NAMESPACE
-# define TESTED_NAMESPACE std
-#endif
-
-void module_foot(void);
-void module_head(std::string name);
-
-template <typename T>
-void module_test(std::string name, T result)
+namespace ft
 {
-	module_head(name);
-	std::cout << result << std::endl;
-	module_foot();
+	template <class T>
+	class random_access_iterator
+	{
+			typedef T value_type;
+			typedef value_type& reference;
+			typedef value_type* pointer;
+			typedef const value_type& const_reference;
+			typedef const value_type* const_pointer;
+			typedef std::ptrdiff_t difference_type;
+	};
 }
-
-void test_vector(void);
 
 #endif

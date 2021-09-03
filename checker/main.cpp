@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 18:21:24 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/02 14:26:14 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/03 22:25:35 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-
+#include <limits.h>
+#include <math.h>
 
 void test_module(
 		std::string module_name, std::ifstream &file1, std::ifstream &file2, int &test_ok)
@@ -28,7 +29,7 @@ void test_module(
 	//cyan output
 	std::cout << "   >>> \033[1;34m" << module_name << " ";
 	while (std::getline(file1, line1) && std::getline(file2, line2)
-	&& line1 != "<<<")
+	&& line1.find("<<< ") != 0)
 	{
 		if (line1 != line2)
 		{
@@ -49,7 +50,22 @@ void test_module(
 	{
 		std::cout << std::right << std::setw(53 - module_name.length())
 			<< "\033[0;32m[OK]\033[0m" << std::endl;
-		test_ok++;
+	}
+	if (line1.find("<<< ") == 0)
+	{
+		std::string time_to_parse_stl = line2.substr(4);
+		std::string time_to_parse_ft = line1.substr(4);
+		double		time_slt = atof(time_to_parse_stl.c_str());
+		double		time_ft = atof(time_to_parse_ft.c_str());
+
+		//check if time_ft is less that time_stl * 20
+		if (time_ft > time_slt * 20)
+		{
+			std::cout << "\033[0;31m    >>> \033[1;34m test too slow:"
+			<< std::fixed << "\x1B[0m [\033[0;31m" << time_ft << "\x1B[0m] / [\033[0;32m" << time_slt << "\x1B[0m]" << std::endl;
+		}
+		else if (!ko)
+			test_ok++;
 	}
 }
 
