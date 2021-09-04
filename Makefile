@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/14 10:00:31 by tmatis            #+#    #+#              #
-#    Updated: 2021/09/03 16:41:45 by tmatis           ###   ########.fr        #
+#    Updated: 2021/09/04 15:23:39 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ INCLUDE_PATH	= ./
 
 SRCS			=
 SRCS_CHECKER	= checker/main.cpp
-SRCS_TESTS 		= tests/main.cpp tests/test_vector.cpp
+SRCS_TESTS 		= tests/main.cpp tests/test_vector.cpp tests/test_iterator.cpp
 
 ################################################################################
 #                                 Makefile logic                               #
@@ -95,10 +95,15 @@ bin_ft:
 ./bin_test:	${OBJS} ${OBJ_CHECKER}
 		@$(call run_and_test,$(CC) $(CFLAGS) -I$(INCLUDE_PATH) -o $@ ${OBJS} ${OBJ_CHECKER})
 	
-run: header fclean bin_stl bin_ft ./bin_test
+run: header clean bin_stl bin_ft ./bin_test
 		@./bin_ft > ./stl.out
 		@./bin_stl > ./ft.out
 		@./bin_test
+
+runok: header clean bin_stl bin_ft ./bin_test
+		@./bin_ft > ./stl.out
+		@./bin_stl > ./ft.out
+		@./bin_test --show-ok
 
 
 objs/%.o: 	$(SRCS_PATH)/%.cpp
@@ -106,11 +111,11 @@ objs/%.o: 	$(SRCS_PATH)/%.cpp
 			@$(call run_and_test,$(CC) $(CFLAGS) -c $< -o $@ -I$(INCLUDE_PATH))
 
 clean:		header
-			@rm -rf objs objs_tests ft.out stl.out
+			@rm -rf objs objs_tests ft.out stl.out ./bin_ft ./bin_stl
 			@printf "%-53b%b" "$(COM_COLOR)clean:" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"
 
 fclean:		header clean
-			@rm -rf ./verif ./bin_ft ./bin_stl ./bin_test
+			@rm -rf ./bin_test
 			@rm -rf $(TEST_NAME)
 			@printf "%-53b%b" "$(COM_COLOR)fclean:" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"
 

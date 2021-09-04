@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 18:21:24 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/03 22:25:35 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/04 15:19:19 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,25 @@
 #include <limits.h>
 #include <math.h>
 
+bool show_ok = false;
+
+void show_module_result(std::string module_name, bool ok)
+{
+	std::cout << "\033[1;36m";
+	std::cout << "   >>> \033[1;34m" << module_name << " ";
+	
+	if (ok)
+	{
+		std::cout << std::right << std::setw(53 - module_name.length())
+			<< "\033[0;32m[OK]\033[0m" << std::endl;
+	}
+	else
+	{
+		std::cout << std::right << std::setw(53 - module_name.length())
+			<< "\033[0;31m[KO]\033[0m" << std::endl;
+	}
+}
+
 void test_module(
 		std::string module_name, std::ifstream &file1, std::ifstream &file2, int &test_ok)
 {
@@ -25,9 +44,7 @@ void test_module(
 	bool ko = false;
 
 	//fancy blue output
-	std::cout << "\033[1;36m";
-	//cyan output
-	std::cout << "   >>> \033[1;34m" << module_name << " ";
+	
 	while (std::getline(file1, line1) && std::getline(file2, line2)
 	&& line1.find("<<< ") != 0)
 	{
@@ -35,8 +52,7 @@ void test_module(
 		{
 			if (!ko)
 			{
-				std::cout << std::right << std::setw(53 - module_name.length())
-					<< "\033[0;31m[KO]\033[0m" << std::endl;
+				show_module_result(module_name, false);
 				ko = true;
 			}
 			std::cout << "\"\033[0;31m" << line1 << "\033[0m\"";
@@ -46,11 +62,8 @@ void test_module(
 			std::cout << std::endl;
 		}
 	}
-	if (!ko)
-	{
-		std::cout << std::right << std::setw(53 - module_name.length())
-			<< "\033[0;32m[OK]\033[0m" << std::endl;
-	}
+	if (!ko && show_ok)
+		show_module_result(module_name, true);
 	if (line1.find("<<< ") == 0)
 	{
 		std::string time_to_parse_stl = line2.substr(4);
@@ -61,6 +74,8 @@ void test_module(
 		//check if time_ft is less that time_stl * 20
 		if (time_ft > time_slt * 20)
 		{
+			if (!ko && !show_ok)
+				show_module_result(module_name, true);
 			std::cout << "\033[0;31m    >>> \033[1;34m test too slow:"
 			<< std::fixed << "\x1B[0m [\033[0;31m" << time_ft << "\x1B[0m] / [\033[0;32m" << time_slt << "\x1B[0m]" << std::endl;
 		}
@@ -69,7 +84,7 @@ void test_module(
 	}
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
 	std::ifstream in_stl("stl.out");
 	std::ifstream in_ft("ft.out");
@@ -78,6 +93,9 @@ int main(void)
 	int test_count = 0;
 	int test_ok = 0;
 
+	//detect if argv[1] is equal to "--show-ok"
+	if (argc >= 2 && std::string(argv[1]) == "--show-ok")
+		show_ok = true;
 	std::cout << "[[[ \033[1;33mtmatis\033[0m's \033[1;36mft_container \033[1;34mchecker\033[0m ]]]" << std::endl;
 	if (!in_stl.is_open() || !in_ft.is_open())
 	{
