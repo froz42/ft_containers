@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:53:40 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/03 22:22:07 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/04 14:23:13 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,8 @@
 #define VECTOR_HPP
 
 #include <memory>
-#include "VectorIterator.hpp"
-#include "VectorReverseIterator.hpp"
-#include "VectorConstIterator.hpp"
-#include "VectorConstReverseIterator.hpp"
-#include <unistd.h>
+#include "../iterators/random_access_iterator.hpp"
+#include "../iterators/reverse_iterator.hpp"
 
 namespace ft
 {
@@ -37,10 +34,10 @@ namespace ft
 		typedef std::ptrdiff_t difference_type;								  // int
 
 		// Iterators
-		typedef ft::VectorIterator<T> iterator;
-		typedef ft::VectorReverseIterator<T> reverse_iterator;
-		typedef ft::VectorConstIterator<T> const_iterator;
-		typedef ft::VectorConstReverseIterator<T> const_reverse_iterator;
+		typedef ft::random_access_iterator<value_type> iterator;			// syntax for vector<int>::iterator == vector<int>::iterator
+		typedef ft::random_access_iterator<value_type const> const_iterator; // syntax for vector<int>::const_iterator == vector<int>::const_iterator
+		typedef ft::reverse_iterator<iterator> reverse_iterator;			// syntax for vector<int>::reverse_iterator == vector<int>::reverse_iterator
+		typedef ft::reverse_iterator<iterator> const_reverse_iterator;
 
 		// Constructors
 		explicit vector(const allocator_type &alloc = allocator_type())
@@ -123,11 +120,11 @@ namespace ft
 		}
 		reverse_iterator rbegin(void)
 		{
-			return reverse_iterator(_data + _size - 1);
+			return reverse_iterator(_data + _size);
 		}
 		reverse_iterator rend(void)
 		{
-			return reverse_iterator(_data - 1);
+			return reverse_iterator(_data);
 		}
 		const_iterator begin(void) const
 		{
@@ -139,11 +136,11 @@ namespace ft
 		}
 		const_reverse_iterator rbegin(void) const
 		{
-			return const_reverse_iterator(_data + _size - 1);
+			return const_reverse_iterator(_data);
 		}
 		const_reverse_iterator rend(void) const
 		{
-			return const_reverse_iterator(_data - 1);
+			return const_reverse_iterator(_data);
 		}
 
 		bool empty(void) const
