@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/14 10:00:31 by tmatis            #+#    #+#              #
-#    Updated: 2021/09/04 15:23:39 by tmatis           ###   ########.fr        #
+#    Updated: 2021/09/05 23:14:57 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@
 
 NAME	= ft_containers
 CC 		= clang++
-CFLAGS	= -Wall -Werror -Wextra -std=c++98 -g
+CFLAGS	= -Wall -Werror -Wextra -std=c++98
 AUTHOR	= tmatis
 DATE	= 01/09/2021
 
@@ -31,7 +31,8 @@ INCLUDE_PATH	= ./
 
 SRCS			=
 SRCS_CHECKER	= checker/main.cpp
-SRCS_TESTS 		= tests/main.cpp tests/test_vector.cpp tests/test_iterator.cpp
+SRCS_TESTS 		= tests/main.cpp tests/test_vector.cpp tests/test_iterator.cpp \
+					tests/test_sfinae.cpp
 
 ################################################################################
 #                                 Makefile logic                               #
@@ -54,10 +55,28 @@ ERROR_STRING = "[KO]"
 WARN_STRING  = "[WARN]"
 COM_STRING   = "Compiling"
 
+ifeq ($(OS),Windows_NT) 
+    detected_OS := Windows
+else
+    detected_OS := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
+endif
+
+ifeq ($(detected_OS),Darwin) 
+	RUN_CMD = script -q $@.log $1 > /dev/null; \
+				RESULT=$$?
+else ifeq ($(detected_OS),Linux)
+	RUN_CMD = script -q -e -c "$(1)" $@.log > /dev/null; \
+				RESULT=$$?; \
+				sed -i '1d' $@.log; \
+				sed -i "$$(($$(wc -l < $@.log)-1)),\$$d" $@.log
+else
+	RUN_CMD = $(1) 2> $@.log; \
+				RESULT=$$?
+endif
+
 define run_and_test
 printf "%b" "$(COM_COLOR)$(COM_STRING) $(OBJ_COLOR)$(@F)$(NO_COLOR)\r"; \
-$(1) 2> $@.log; \
-RESULT=$$?; \
+$(RUN_CMD); \
 if [ $$RESULT -ne 0 ]; then \
   printf "%-60b%b" "$(COM_COLOR)$(COM_STRING)$(OBJ_COLOR) $@" "$(ERROR_COLOR)$(ERROR_STRING)$(NO_COLOR)\n"   ; \
 elif [ -s $@.log ]; then \
@@ -84,6 +103,8 @@ header:
 	@printf "%b" "$(OBJ_COLOR)Name:	$(WARN_COLOR)$(NAME)\n"
 	@printf "%b" "$(OBJ_COLOR)Author:	$(WARN_COLOR)$(AUTHOR)\n"
 	@printf "%b" "$(OBJ_COLOR)Date: 	$(WARN_COLOR)$(DATE)\n\033[m"
+	@printf "%b" "$(OBJ_COLOR)CC: 	$(WARN_COLOR)$(CC)\n\033[m"
+	@printf "%b" "$(OBJ_COLOR)Flags: 	$(WARN_COLOR)$(CFLAGS)\n\033[m"
 	@echo
 
 bin_stl: 	
@@ -101,8 +122,8 @@ run: header clean bin_stl bin_ft ./bin_test
 		@./bin_test
 
 runok: header clean bin_stl bin_ft ./bin_test
-		@./bin_ft > ./stl.out
-		@./bin_stl > ./ft.out
+		@./bin_stl > ./stl.out
+		@./bin_ft > ./ft.out
 		@./bin_test --show-ok
 
 

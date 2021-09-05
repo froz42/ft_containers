@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 13:17:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/04 15:04:31 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/05 23:14:20 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,5 @@ void module_test(std::string name, T result)
 
 void test_vector(void);
 void test_iterator(void);
-
+void test_sfinae(void);
 #endif

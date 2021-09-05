@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft.hpp                                             :+:      :+:    :+:   */
+/*   enable_if.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/03 16:35:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/05 23:11:19 by tmatis           ###   ########.fr       */
+/*   Created: 2021/09/05 21:18:44 by tmatis            #+#    #+#             */
+/*   Updated: 2021/09/05 21:19:44 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_HPP
-# define FT_HPP
+#ifndef ENABLE_IF_HPP
+# define ENABLE_IF_HPP
 
-# include "sfinae/enable_if.hpp"
-# include "sfinae/is_integral.hpp"
-# include "iterators/iterator_traits.hpp"
-# include "iterators/random_access_iterator.hpp"
-# include "iterators/reverse_iterator.hpp"
-# include "vector/vector.hpp"
+namespace ft
+{
+	template<bool B, class T = void>
+	struct enable_if {};
+ 
+	template<class T>
+	struct enable_if<true, T> { typedef T type; };
+}
 
 #endif

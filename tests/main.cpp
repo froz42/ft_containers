@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 19:04:30 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/04 15:04:47 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/05 23:15:27 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void module_head(std::string module_name)
 void module_init(void)
 {
 	clock_gettime(CLOCK_MONOTONIC, &start);
-	std::ios_base::sync_with_stdio(false);	
 }
 
 void module_foot(void)
@@ -36,13 +35,13 @@ void module_foot(void)
     time_taken = (time_taken + (end.tv_nsec - start.tv_nsec)) * 1e-9;
 	std::cout << "<<< " << std::fixed << time_taken << std::endl;
 	clock_gettime(CLOCK_MONOTONIC, &start);
-	std::ios_base::sync_with_stdio(false);
 }
 
 int main(void)
 {
 	module_init();
 	module_test("witness test", 42);
+	test_sfinae();
 	test_iterator();
 	test_vector();
 }

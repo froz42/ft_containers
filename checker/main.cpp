@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 18:21:24 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/04 15:19:19 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/05 20:41:37 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void show_module_result(std::string module_name, bool ok)
 {
 	std::cout << "\033[1;36m";
 	std::cout << "   >>> \033[1;34m" << module_name << " ";
-	
 	if (ok)
 	{
 		std::cout << std::right << std::setw(53 - module_name.length())
@@ -36,14 +35,14 @@ void show_module_result(std::string module_name, bool ok)
 	}
 }
 
+// TODO: rewrite this function
+
 void test_module(
 		std::string module_name, std::ifstream &file1, std::ifstream &file2, int &test_ok)
 {
 	std::string line1;
 	std::string line2;
 	bool ko = false;
-
-	//fancy blue output
 	
 	while (std::getline(file1, line1) && std::getline(file2, line2)
 	&& line1.find("<<< ") != 0)
@@ -58,7 +57,7 @@ void test_module(
 			std::cout << "\"\033[0;31m" << line1 << "\033[0m\"";
 			std::cout << " != ";
 			std::cout << "\"\033[0;31m" << line2 << "\033[0m\"";
-			std::cout << " (stl != ft)";
+			std::cout << " (slt != ft)";
 			std::cout << std::endl;
 		}
 	}
@@ -66,8 +65,8 @@ void test_module(
 		show_module_result(module_name, true);
 	if (line1.find("<<< ") == 0)
 	{
-		std::string time_to_parse_stl = line2.substr(4);
-		std::string time_to_parse_ft = line1.substr(4);
+		std::string time_to_parse_stl = line1.substr(4);
+		std::string time_to_parse_ft = line2.substr(4);
 		double		time_slt = atof(time_to_parse_stl.c_str());
 		double		time_ft = atof(time_to_parse_ft.c_str());
 
@@ -129,5 +128,5 @@ int main(int argc, char **argv)
 		std::cout << "\033[0;32m" << test_ok << "/" << test_count << "\033[0m" << std::endl;
 	else
 		std::cout << "\033[0;31m" << test_ok << "/" << test_count << "\033[0m" << std::endl;
-	return (test_ok == test_count ? 0 : 1);
+	return (test_ok != test_count);
 }
