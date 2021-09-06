@@ -21,14 +21,15 @@
  - [x] front tested: [ ]
  - [x] back tested: [ ]
  
- - [ ]  assign tested: [ ]
- - [ ]  push_back tested: [ ]
- - [ ] pop_back tested: [ ]
- - [ ]  insert tested: [ ]
- - [ ]  erase tested: [ ]
- - [ ] swap tested: [ ]
- - [ ] clear tested: [ ]
+ - [x]  assign tested: [ ]
+ - [x]  push_back tested: [ ]
+ - [x]  pop_back tested: [ ]
+ - [x]  insert tested: [ ]
+ - [x]  erase tested: [ ]
+ - [x] swap tested: [ ]
+ - [x] clear tested: [ ]
  
- - [ ] get_allocator: []
+ - [x] get_allocator: []
+
  - [ ] relational_operator tested: [ ]
  - [ ] swap tested: [ ]

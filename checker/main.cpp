@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 18:21:24 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/05 20:41:37 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/06 17:49:46 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ void show_module_result(std::string module_name, bool ok)
 			<< "\033[0;31m[KO]\033[0m" << std::endl;
 	}
 }
-
-// TODO: rewrite this function
 
 void test_module(
 		std::string module_name, std::ifstream &file1, std::ifstream &file2, int &test_ok)

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 13:23:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/06 17:46:31 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/06 21:22:14 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,64 +31,74 @@ std::string string_vector(TESTED_NAMESPACE::vector<T> &v)
 	return ss.str();
 }
 
-void test_empty_vector(void)
+void test_constructor()
 {
-	TESTED_NAMESPACE::vector<int> v;
-	TESTED_NAMESPACE::vector<int> v2(v);
-	TESTED_NAMESPACE::vector<int> v3;
-	v3 = v;
-	module_test("[empty] vector::operator=", v3.size() == v.size());
-	module_test("[empty] vector::operator=", v3.empty() == v.empty());
-	module_test("[empty] vector::begin", &*v.begin());
-	module_test("[empty] vector::end", &*v.end());
-	module_test("[empty] vector::rbegin", &*v.rbegin());
-	module_test("[empty] vector::rend", &*v.rend());
-	module_test("[empty] vector::size", v.size());
-	module_test("[empty] vector::max_size", v.max_size());
-	module_test("[empty] vector::empty", v.empty());
-	module_test("[empty] vector::capacity", v.capacity());
-	module_test("[empty] vector::content", string_vector(v));
-	v.resize(10);
-	module_test("[empty] vector::resize", v.size());
-	module_test("[empty] vector::capacity", v.capacity());
-	module_test("[empty] vector::content", string_vector(v));
-	v.resize(1);
-	module_test("[empty] vector::resize", v.size());
-	module_test("[empty] vector::capacity", v.capacity());
-	module_test("[empty] vector::content", string_vector(v));
-	v.resize(10, 42);
-	module_test("[empty] vector::resize", v.size());
-	module_test("[empty] vector::capacity", v.capacity());
-	module_test("[empty] vector::content", string_vector(v));
-	v2 = v;
-	module_test("[empty] vector::resize after copy", v2.size());
-	module_test("[empty] vector::capacity after copy", v2.capacity());
-	module_test("[empty] vector::content after copy", string_vector(v2));
-	v.clear();
-	module_test("[empty] vector::clear", v.size());
-	module_test("[empty] vector::capacity after clear", v.capacity());
-	module_test("[empty] vector::content after clear", string_vector(v));
-	module_test("[empty] vector::empty after clear", v.empty());
-	v.resize(10, 42);
-	module_test("[empty] vector::operator[]", v[0]);
-	module_test("[empty] vector::operator[]", v[9]);
-	module_test("[empty] vector::at", v.at(0));
-	module_head("[empty] vector::at (exept)");
-	try
-	{
-		v.at(15);
-		std::cout << "FAILED" << std::endl;
-	}
-	catch (std::out_of_range &e)
-	{
-		std::cout << "OK" << std::endl;
-	}
+	module_head("vector::constructor");
+	TESTED_NAMESPACE::vector<int> v1; // default constructor
+	TESTED_NAMESPACE::vector<int> v2(5); // size constructor
+	TESTED_NAMESPACE::vector<int> v3(5, 42); // size and value constructor
+	TESTED_NAMESPACE::vector<int> v4(v3); // copy constructor
+	TESTED_NAMESPACE::vector<int> v5(v3.begin(), v3.end()); // iterator constructor
 	module_foot();
-	module_test("[empty] vector::front", v.front());
-	module_test("[empty] vector::back", v.back());
+
+	module_test("vector::constructor (default)", string_vector(v1));
+	module_test("vector::constructor (size)", string_vector(v2));
+	module_test("vector::constructor (size and value)", string_vector(v3));
+	module_test("vector::constructor (copy)", string_vector(v4));
+	module_test("vector::constructor (iterator)", string_vector(v5));
+
+	module_test("vector::constructor (default) (size)", v1.size());
+	module_test("vector::constructor (size) (size)", v2.size());
+	module_test("vector::constructor (size and value) (size)", v3.size());
+	module_test("vector::constructor (copy) (size)", v4.size());
+	module_test("vector::constructor (iterator) (size)", v5.size());
+
+	module_test("vector::constructor (default) (capacity)", v1.capacity());
+	module_test("vector::constructor (size) (capacity)", v2.capacity());
+	module_test("vector::constructor (size and value) (capacity)", v3.capacity());
+	module_test("vector::constructor (copy) (capacity)", v4.capacity());
+	module_test("vector::constructor (iterator) (capacity)", v5.capacity());
+
+	module_test("vector::constructor (default) (empty)", v1.empty());
+	module_test("vector::constructor (size) (empty)", v2.empty());
+	module_test("vector::constructor (size and value) (empty)", v3.empty());
+	module_test("vector::constructor (copy) (empty)", v4.empty());
+	module_test("vector::constructor (iterator) (empty)", v5.empty());
+
+	module_test("vector::constructor (default) (front)", v1.front());
+	module_test("vector::constructor (size) (front)", v2.front());
+	module_test("vector::constructor (size and value) (front)", v3.front());
+	module_test("vector::constructor (copy) (front)", v4.front());
+	module_test("vector::constructor (iterator) (front)", v5.front());
+
+	module_test("vector::constructor (default) (back)", v1.back());
+	module_test("vector::constructor (size) (back)", v2.back());
+	module_test("vector::constructor (size and value) (back)", v3.back());
+	module_test("vector::constructor (copy) (back)", v4.back());
+	module_test("vector::constructor (iterator) (back)", v5.back());
+
+	module_test("vector::constructor (default) (at)", v1.at(0));
+	module_test("vector::constructor (size) (at)", v2.at(0));
+	module_test("vector::constructor (size and value) (at)", v3.at(0));
+	module_test("vector::constructor (copy) (at)", v4.at(0));
+	module_test("vector::constructor (iterator) (at)", v5.at(0));
+
+	module_test("vector::constructor (default) (operator[]", &v1[0]);
+	module_test("vector::constructor (size) (operator[]", &v2[0]);
+	module_test("vector::constructor (size and value) (operator[]", &v3[0]);
+	module_test("vector::constructor (copy) (operator[]", v4[0]);
+	module_test("vector::constructor (iterator) (operator[]", v5[0]);
+
+	module_test("vector::constructor (default) (begin)", &*(v1.begin()));
+	module_test("vector::constructor (size) (begin)", &*(v2.begin()));
+	module_test("vector::constructor (size and value) (begin)", &*(v3.begin()));
+	module_test("vector::constructor (copy) (begin)", &*(v4.begin()));
+	module_test("vector::constructor (iterator) (begin)", &*(v5.begin()));
+	
+
 }
 
 void test_vector(void)
 {
-	test_empty_vector();
+	test_constructor();
 }
