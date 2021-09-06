@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 19:04:30 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/05 23:15:27 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/06 17:43:48 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ int main(void)
 	module_test("witness test", 42);
 	test_sfinae();
 	test_iterator();
+	test_pair();
 	test_vector();
 }

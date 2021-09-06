@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/14 10:00:31 by tmatis            #+#    #+#              #
-#    Updated: 2021/09/05 23:14:57 by tmatis           ###   ########.fr        #
+#    Updated: 2021/09/06 17:40:41 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,8 +31,8 @@ INCLUDE_PATH	= ./
 
 SRCS			=
 SRCS_CHECKER	= checker/main.cpp
-SRCS_TESTS 		= tests/main.cpp tests/test_vector.cpp tests/test_iterator.cpp \
-					tests/test_sfinae.cpp
+SRCS_TESTS 		= tests/main.cpp tests/test_iterator.cpp tests/test_sfinae.cpp \
+					 tests/test_pair.cpp tests/test_vector.cpp 
 
 ################################################################################
 #                                 Makefile logic                               #
