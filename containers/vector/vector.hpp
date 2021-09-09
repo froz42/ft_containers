@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:53:40 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/06 21:33:38 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/09 18:43:32 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #include "../sfinae/enable_if.hpp"
 #include "../sfinae/is_integral.hpp"
 #include <unistd.h>
+#include <iostream>
+
 
 namespace ft
 {
@@ -94,6 +96,7 @@ namespace ft
 			if (this != &x)
 			{
 				this->clear();
+				_alloc.deallocate(_data, _capacity);
 				this->_size = x._size;
 				this->_capacity = x._capacity;
 				this->_data = _alloc.allocate(_capacity);
@@ -172,9 +175,10 @@ namespace ft
 				value_type *tmp = _alloc.allocate(n);
 
 				for (size_type i = 0; i < _size; i++)
+				{
 					_alloc.construct(&tmp[i], _data[i]);
-				for (size_type i = 0; i < _size; i++)
 					_alloc.destroy(&_data[i]);
+				}
 				_alloc.deallocate(_data, _capacity);
 				_capacity = n;
 				_data = tmp;
@@ -256,57 +260,83 @@ namespace ft
 			std::swap(_alloc, x._alloc);
 		}
 
+
 		iterator insert(iterator position, const value_type &val)
 		{
-			if (_size == _capacity)
-				this->_extend();
-			iterator it = _data + position;
-			for (size_type i = _size; i > it; i--)
-				_alloc.construct(&_data[i], _data[i - 1]);
-			_alloc.construct(&_data[it], val);
-			_size++;
-			return it;
-		}
+			size_type i = &*position - &*begin();
 
+			//case 1: we need to reallocate
+			if (_size == _capacity)
+			{
+				size_type new_capacity = _capacity * 2;
+				if (new_capacity == 0)
+					new_capacity = 1;
+				value_type *tmp = _alloc.allocate(new_capacity);
+
+				for (size_type j = 0; j < i; j++)
+					_alloc.construct(&tmp[j], _data[j]);
+				_alloc.construct(&tmp[i], val);
+				for (size_type j = i; j < _size; j++)
+					_alloc.construct(&tmp[j + 1], _data[j]);
+				_alloc.deallocate(_data, _capacity);
+				_data = tmp;
+				_capacity = new_capacity;
+			}
+			else
+			{
+				for (size_type j = _size; j > i; j--)
+					_alloc.construct(&_data[j], _data[j - 1]);
+				_alloc.construct(&_data[i], val);
+			}
+			_size++;
+			return iterator(&_data[i]);
+		}
+		
+		//TODO: rewrite this function
 		void insert(iterator position, size_type n, const value_type &val)
 		{
-			if (n + _size >= _capacity)
-				this->_extend(n);
-			iterator offset = _data + position;
-			// move existing elements
-			for (size_type i = _size; i > offset; i--)
-				_alloc.construct(&_data[i + n], _data[i - 1]);
-			// construct new elements
-			for (size_type i = 0; i < n; i++)
-				_alloc.construct(&_data[offset + i], val);
+			size_type i = &*position - &*begin();
+
+			//case 1: we need to reallocate
+			if (_size + n > _capacity)
+			{
+			
+			}
+			else
+			{
+				
+			}
 			_size += n;
 		}
 
+		//TODO: rewrite this function
 		template <class InputIterator>
-		void insert(iterator position, InputIterator first, InputIterator last)
+		void insert(iterator position, InputIterator first, InputIterator last,
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
 		{
+			size_type i = &*position - &*begin();
 			size_type n = std::distance(first, last);
-			if (n + _size >= _capacity)
-				this->_extend(n);
-			iterator offset = _data + position;
-			// move existing elements
-			for (size_type i = _size; i > offset; i--)
-				_alloc.construct(&_data[i + n], _data[i - 1]);
-			// construct new elements
-			for (size_type i = 0; i < n; i++)
-				_alloc.construct(&_data[offset + i], *(first + i));
+
+			//case 1: we need to reallocate
+			if (_size + n > _capacity)
+			{
+				
+			}
+			else
+			{
+				
+			}
 			_size += n;
 		}
 
 		iterator erase(iterator position)
 		{
-			iterator it = _data + position;
-
-			for (size_type i = it; i < _size - 1; i++)
-				_alloc.construct(&_data[i], _data[i + 1]);
-			_alloc.destroy(&_data[_size - 1]);
+			size_type i = &*position - &*begin();
+			_alloc.destroy(&_data[i]);
+			for (size_type j = i; j < _size - 1; j++)
+				_alloc.construct(&_data[j], _data[j + 1]);
 			_size--;
-			return (it);
+			return iterator(_data + i);
 		}
 
 		iterator erase(iterator first, iterator last)
@@ -323,31 +353,30 @@ namespace ft
 			return (first - 1);
 		}
 
+		//TODO: reimplement
 		template <class InputIterator>
-		void assign(InputIterator first, InputIterator last)
+		void assign(InputIterator first, InputIterator last, 
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
 		{
 			size_type n = std::distance(first, last);
 			if (n > _capacity)
 				this->reserve(n);
-			for (size_type i = 0; i < n; i++)
-			{
+			for (size_type i = 0; i < _size; i++)
 				_alloc.destroy(&_data[i]);
-				_alloc.construct(&_data[i], first[i]);
-			}
-			if (n > _size)
-				_size = n;
+			for (size_type i = 0; i < n; i++)
+				_alloc.construct(&_data[i], *first++);
+			this->_size = n;
 		}
+		
 		void assign(size_type n, const value_type &val)
 		{
 			if (n > _capacity)
 				this->reserve(n);
-			for (size_type i = 0; i < n; i++)
-			{
+			for (size_type i = 0; i < _size; i++)
 				_alloc.destroy(&_data[i]);
+			for (size_type i = 0; i < n; i++)
 				_alloc.construct(&_data[i], val);
-			}
-			if (n > _size)
-				_size = n;
+			this->_size = n;
 		}
 
 		allocator_type get_allocator() const
@@ -363,8 +392,15 @@ namespace ft
 
 		void _extend(void)
 		{
-			size_type new_capacity = _capacity * 2;
-			this->reserve(new_capacity);
+			if (_capacity == 0)
+			{
+				this->reserve(1);
+			}
+			else
+			{
+				size_type new_capacity = _capacity * 2;
+				this->reserve(new_capacity);
+			}
 		}
 		void _extend(size_type n)
 		{

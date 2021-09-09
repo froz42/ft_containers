@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 18:21:24 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/06 17:49:46 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/09 18:07:30 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ void show_module_result(std::string module_name, bool ok)
 	std::cout << "   >>> \033[1;34m" << module_name << " ";
 	if (ok)
 	{
-		std::cout << std::right << std::setw(53 - module_name.length())
+		std::cout << std::right << std::setw(70 - module_name.length())
 			<< "\033[0;32m[OK]\033[0m" << std::endl;
 	}
 	else
 	{
-		std::cout << std::right << std::setw(53 - module_name.length())
+		std::cout << std::right << std::setw(70 - module_name.length())
 			<< "\033[0;31m[KO]\033[0m" << std::endl;
 	}
 }
@@ -118,6 +118,8 @@ int main(int argc, char **argv)
 	if (!in_stl.eof() || !in_ft.eof())
 	{
 		std::cout << "Error: Files are not the same size" << std::endl;
+		std::cout << "stl.out: " << line_stl << std::endl;
+		std::cout << "ft.out: " << line_ft << std::endl;
 		return (1);
 	}
 	std::cout << "\033[1;36m>>> \033[1;35mtest sumary: ";
