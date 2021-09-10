@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:53:40 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/10 16:59:49 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/10 17:27:24 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,17 +306,26 @@ namespace ft
 
 		iterator erase(iterator position)
 		{
-			(void)position;
-			
+			size_type i = &*position - &*begin();
+
+			_alloc.destroy(&_data[i]);
+			this->_shift_left(i, 1);
+			_size--;
+			return iterator(&_data[i]);			
 		}
 
 		iterator erase(iterator first, iterator last)
 		{
-						(void)first;
-			(void)last;
+			size_type i = &*first - &*begin();
+			size_type j = &*last - &*begin();
+
+			for (size_type k = i; k < j; k++)
+				_alloc.destroy(&_data[k]);
+			this->_shift_left(i, j - i);
+			_size -= j - i;
+			return iterator(&_data[i]);
 		}
 
-		//TODO: reimplement
 		template <class InputIterator>
 		void assign(InputIterator first, InputIterator last, 
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
@@ -376,6 +385,16 @@ namespace ft
 			{
 				_alloc.construct(&_data[i + n], _data[i]);
 				_alloc.destroy(&_data[i]);
+			}
+		}
+		void _shift_left(size_type position, size_type n)
+		{
+			if (empty())
+				return;
+			for (size_type i = position; i < _size - n; i++)
+			{
+				_alloc.construct(&_data[i], _data[i + n]);
+				_alloc.destroy(&_data[i + n]);
 			}
 		}
 	};

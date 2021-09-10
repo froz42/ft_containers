@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 13:23:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/10 17:02:56 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/10 17:40:52 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ std::string string_vector(TESTED_NAMESPACE::vector<T> &v)
 	std::ostringstream ss;
 
 	ss << "{";
-	for (typename TESTED_NAMESPACE::vector<T>::iterator it = v.begin(); it != v.end(); it++)
+	for (typename TESTED_NAMESPACE::vector<T>::iterator it = v.begin(); it != v.end(); ++it)
 	{
 		ss << *it;
 		if (it != v.end() - 1)
@@ -466,6 +466,108 @@ void test_insert()
 	module_foot();
 }
 
+void test_erase()
+{
+	TESTED_NAMESPACE::vector<int> v1;
+	TESTED_NAMESPACE::vector<int> v2(10000, 10000);
+	TESTED_NAMESPACE::vector<int> v3(5, 5);
+
+	module_head("vector::erase (time)");
+	for (int i = 0; i < 10000; i++)
+		v2.erase(v2.begin());
+	module_foot();
+
+	module_head("vector::erase (iterator) (content)");
+	std::cout << string_vector(v2) << std::endl;
+	std::cout << v2.size() << std::endl;
+	std::cout << v2.capacity() << std::endl;
+	module_foot();
+	/* THIS CRASH BOTH CASE
+	module_head("vector::erase (iterator) empty");
+	std::cout << string_vector(v1) << std::endl;
+	std::cout << v1.size() << std::endl;
+	std::cout << v1.capacity() << std::endl;
+	v1.erase(v1.begin());
+	std::cout << string_vector(v1) << std::endl;
+	std::cout << v1.size() << std::endl;
+	std::cout << v1.capacity() << std::endl;
+	*/
+	module_head("vector::erase (iterator)");
+	std::cout << *v3.erase(v3.begin() + 2) << std::endl;
+	std::cout << string_vector(v3) << std::endl;
+	std::cout << v3.size() << std::endl;
+	std::cout << v3.capacity() << std::endl;
+	module_foot();
+	module_head("vector::erase (iterator, iterator)");
+	TESTED_NAMESPACE::vector<int> v4(42, 42);
+	std::cout << *v4.erase(v4.begin() + 2, v4.end() - 10) << std::endl;
+	std::cout << string_vector(v4) << std::endl;
+	std::cout << v4.size() << std::endl;
+	std::cout << v4.capacity() << std::endl;
+	module_foot();
+	/* CRASH ON STL
+	module_head("vector::erase (iterator) with end");
+	v3.erase(v3.end());
+	std::cout << string_vector(v3) << std::endl;
+	std::cout << v3.size() << std::endl;
+	std::cout << v3.capacity() << std::endl;
+	module_foot();
+	*/
+}
+
+void test_swap()
+{
+	TESTED_NAMESPACE::vector<int> v1;
+	TESTED_NAMESPACE::vector<int> v2(42, 5);
+
+	module_head("vector::swap (time)");
+	for (int i = 0; i < 10000; i++)
+		v2.swap(v1);
+	module_foot();
+
+	module_head("vector::swap (content)");
+	std::cout << string_vector(v2) << std::endl;
+	std::cout << v2.size() << std::endl;
+	std::cout << v2.capacity() << std::endl;
+	module_foot();
+}
+
+void test_clear()
+{
+	TESTED_NAMESPACE::vector<int> v1;
+	TESTED_NAMESPACE::vector<int> v2(42, 5);
+
+	module_head("vector::clear");
+	v2.clear();
+	std::cout << string_vector(v2) << std::endl;
+	std::cout << v2.size() << std::endl;
+	std::cout << v2.capacity() << std::endl;
+	module_foot();
+	module_head("vector::clear (empty)");
+	v1.clear();
+	std::cout << string_vector(v1) << std::endl;
+	std::cout << v1.size() << std::endl;
+	std::cout << v1.capacity() << std::endl;
+	module_foot();
+}
+
+void test_get_allocator()
+{
+	TESTED_NAMESPACE::vector<int> v1;
+	TESTED_NAMESPACE::vector<std::string> v2;
+
+	module_head("vector::get_allocator");
+	TESTED_NAMESPACE::vector<int>::allocator_type alloc1 = v1.get_allocator();
+	TESTED_NAMESPACE::vector<std::string>::allocator_type alloc2 = v2.get_allocator();
+	int *p1 = alloc1.allocate(1);
+	std::string *p2 = alloc2.allocate(1);
+	alloc1.construct(p1, 42);
+	alloc2.construct(p2, "42");
+	std::cout << *p1 << std::endl;
+	std::cout << *p2 << std::endl;
+	module_foot();
+}
+
 void test_vector(void)
 {
 	test_constructor();
@@ -482,4 +584,8 @@ void test_vector(void)
 	test_push_back();
 	test_pop_back();
 	test_insert();
+	test_erase();
+	test_swap();
+	test_clear();
+	test_get_allocator();
 }

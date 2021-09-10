@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 18:21:24 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/09 18:07:30 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/10 17:41:24 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 bool show_ok = false;
 
-void show_module_result(std::string module_name, bool ok)
+void show_module_result(std::string &module_name, bool ok)
 {
 	std::cout << "\033[1;36m";
 	std::cout << "   >>> \033[1;34m" << module_name << " ";

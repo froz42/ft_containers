@@ -24,12 +24,12 @@
  - [x]  assign tested: [x]
  - [x]  push_back tested: [x]
  - [x]  pop_back tested: [x]
- - [x]  insert tested: [ ]
- - [x]  erase tested: [ ]
- - [x] swap tested: [ ]
- - [x] clear tested: [ ]
+ - [x]  insert tested: [x]
+ - [x]  erase tested: [x]
+ - [x] swap tested: [x]
+ - [x] clear tested: []
  
- - [x] get_allocator: []
+ - [x] get_allocator: [x]
 
  - [ ] relational_operator tested: [ ]
  - [ ] swap tested: [ ]
