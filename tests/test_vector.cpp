@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 13:23:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/10 18:01:28 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/10 18:16:46 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -481,7 +481,7 @@ void test_erase()
 	TESTED_NAMESPACE::vector<int> v3(5, 5);
 
 	module_head("vector::erase (time)");
-	for (int i = 0; i < 10000; i++)
+	for (int i = 0; i < 500; i++)
 		v2.erase(v2.begin());
 	module_foot();
 
