@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 13:23:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/09 18:41:05 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/10 17:02:56 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -429,10 +429,19 @@ void test_insert()
 	for (int i = 0; i < 500; i++)
 		v2.insert(v2.begin() + 3, i);
 	module_foot();
-	module_head("vector::insert (value)");
+	module_head("vector::insert (iterator, value) (content)");
 	std::cout << string_vector(v2) << std::endl;
 	std::cout << v2.size() << std::endl;
 	std::cout << v2.capacity() << std::endl;
+	module_foot();
+	module_head("vector::insert (iterator, value) empty");
+	std::cout << string_vector(v1) << std::endl;
+	std::cout << v1.size() << std::endl;
+	std::cout << v1.capacity() << std::endl;
+	v1.insert(v1.begin(), 42);
+	std::cout << string_vector(v1) << std::endl;
+	std::cout << v1.size() << std::endl;
+	std::cout << v1.capacity() << std::endl;
 	module_foot();
 	module_head("vector::insert (iterator, value)");
 	v3.insert(v3.begin() + 2, 42);
@@ -445,20 +454,20 @@ void test_insert()
 	std::cout << v3.capacity() << std::endl;
 	module_foot();
 	module_head("vector::insert (iterator, iterator, iterator)");
-	v3.insert(v3.begin() + 2, v2.begin() + 3, v2.begin() + 5);
-	std::cout << string_vector(v3) << std::endl;
-	std::cout << v3.size() << std::endl;
-	std::cout << v3.capacity() << std::endl;
-	v3.insert(v3.begin() + 2, v2.begin() + 3, v2.begin() + 5);
-	std::cout << string_vector(v3) << std::endl;
-	std::cout << v3.size() << std::endl;
-	std::cout << v3.capacity() << std::endl;
+	TESTED_NAMESPACE::vector<int> v4;
+	v4.insert(v4.begin(), v2.begin(), v2.end());
+	std::cout << string_vector(v4) << std::endl;
+	std::cout << v4.size() << std::endl;
+	std::cout << v4.capacity() << std::endl;
+	v4.insert(v4.begin() + 3, v2.begin(), v2.end());
+	std::cout << string_vector(v4) << std::endl;
+	std::cout << v4.size() << std::endl;
+	std::cout << v4.capacity() << std::endl;
 	module_foot();
 }
 
 void test_vector(void)
 {
-	/*
 	test_constructor();
 	test_operator_assign();
 	test_begin_end();
@@ -471,6 +480,6 @@ void test_vector(void)
 	test_front_back();
 	test_assign();
 	test_push_back();
-	test_pop_back();*/
+	test_pop_back();
 	test_insert();
 }

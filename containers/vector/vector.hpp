@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:53:40 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/09 18:43:32 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/10 16:59:49 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ namespace ft
 			if (this != &x)
 			{
 				this->clear();
-				_alloc.deallocate(_data, _capacity);
+				if (_data)
+					_alloc.deallocate(_data, _capacity);
 				this->_size = x._size;
 				this->_capacity = x._capacity;
 				this->_data = _alloc.allocate(_capacity);
@@ -179,7 +180,8 @@ namespace ft
 					_alloc.construct(&tmp[i], _data[i]);
 					_alloc.destroy(&_data[i]);
 				}
-				_alloc.deallocate(_data, _capacity);
+				if (_data)
+					_alloc.deallocate(_data, _capacity);
 				_capacity = n;
 				_data = tmp;
 			}
@@ -265,29 +267,10 @@ namespace ft
 		{
 			size_type i = &*position - &*begin();
 
-			//case 1: we need to reallocate
 			if (_size == _capacity)
-			{
-				size_type new_capacity = _capacity * 2;
-				if (new_capacity == 0)
-					new_capacity = 1;
-				value_type *tmp = _alloc.allocate(new_capacity);
-
-				for (size_type j = 0; j < i; j++)
-					_alloc.construct(&tmp[j], _data[j]);
-				_alloc.construct(&tmp[i], val);
-				for (size_type j = i; j < _size; j++)
-					_alloc.construct(&tmp[j + 1], _data[j]);
-				_alloc.deallocate(_data, _capacity);
-				_data = tmp;
-				_capacity = new_capacity;
-			}
-			else
-			{
-				for (size_type j = _size; j > i; j--)
-					_alloc.construct(&_data[j], _data[j - 1]);
-				_alloc.construct(&_data[i], val);
-			}
+				this->_extend();
+			this->_shift_right(i, 1);
+			_alloc.construct(&_data[i], val);
 			_size++;
 			return iterator(&_data[i]);
 		}
@@ -297,15 +280,11 @@ namespace ft
 		{
 			size_type i = &*position - &*begin();
 
-			//case 1: we need to reallocate
 			if (_size + n > _capacity)
-			{
-			
-			}
-			else
-			{
-				
-			}
+				this->reserve(_size + n);
+			this->_shift_right(i, n);
+			for (size_type j = 0; j < n; j++)
+				_alloc.construct(&_data[i + j], val);
 			_size += n;
 		}
 
@@ -317,40 +296,24 @@ namespace ft
 			size_type i = &*position - &*begin();
 			size_type n = std::distance(first, last);
 
-			//case 1: we need to reallocate
 			if (_size + n > _capacity)
-			{
-				
-			}
-			else
-			{
-				
-			}
+				this->reserve(_size + n);
+			this->_shift_right(i, n);
+			for (size_type j = 0; j < n; j++)
+				_alloc.construct(&_data[i + j], *(first + j));
 			_size += n;
 		}
 
 		iterator erase(iterator position)
 		{
-			size_type i = &*position - &*begin();
-			_alloc.destroy(&_data[i]);
-			for (size_type j = i; j < _size - 1; j++)
-				_alloc.construct(&_data[j], _data[j + 1]);
-			_size--;
-			return iterator(_data + i);
+			(void)position;
+			
 		}
 
 		iterator erase(iterator first, iterator last)
 		{
-			size_type n = std::distance(first, last);
-
-			// destroy elements
-			for (size_type i = first; i < last; i++)
-				_alloc.destroy(&_data[i]);
-			// move elements
-			for (size_type i = last; i < _size - n; i++)
-				_alloc.construct(&_data[i], _data[i - n]);
-			_size -= n;
-			return (first - 1);
+						(void)first;
+			(void)last;
 		}
 
 		//TODO: reimplement
@@ -393,9 +356,7 @@ namespace ft
 		void _extend(void)
 		{
 			if (_capacity == 0)
-			{
 				this->reserve(1);
-			}
 			else
 			{
 				size_type new_capacity = _capacity * 2;
@@ -406,6 +367,16 @@ namespace ft
 		{
 			size_type new_capacity = _capacity + n;
 			this->reserve(new_capacity);
+		}
+		void _shift_right(size_type position, size_type n)
+		{
+			if (empty())
+				return;
+			for (size_type i = _size - 1; i >= position; i--)
+			{
+				_alloc.construct(&_data[i + n], _data[i]);
+				_alloc.destroy(&_data[i]);
+			}
 		}
 	};
 	template <class T, class Alloc>
