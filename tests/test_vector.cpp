@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 13:23:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/10 17:40:52 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/10 17:58:33 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,16 +135,24 @@ void test_operator_assign()
 	TESTED_NAMESPACE::vector<int> v1;
 	TESTED_NAMESPACE::vector<int> v2(42, 5);
 	TESTED_NAMESPACE::vector<int> v3(42, 10);
+	TESTED_NAMESPACE::vector<int> v4(v2);
 
 	module_head("vector::operator=");
+	v4 = v1;
 	v1 = v2;
 	v2 = v3;
 	std::cout << string_vector(v1) << std::endl;
 	std::cout << v1.size() << std::endl;
+	std::cout << v1.capacity() << std::endl;
 	std::cout << string_vector(v2) << std::endl;
 	std::cout << v2.size() << std::endl;
+	std::cout << v2.capacity() << std::endl;
 	std::cout << string_vector(v3) << std::endl;
 	std::cout << v3.size() << std::endl;
+	std::cout << v3.capacity() << std::endl;
+	std::cout << string_vector(v4) << std::endl;
+	std::cout << v4.size() << std::endl;
+	std::cout << v4.capacity() << std::endl;
 	module_foot();
 }
 
@@ -568,6 +576,61 @@ void test_get_allocator()
 	module_foot();
 }
 
+void test_relational_operators()
+{
+	TESTED_NAMESPACE::vector<int> v1;
+	TESTED_NAMESPACE::vector<int> v2(42, 5);
+	TESTED_NAMESPACE::vector<int> v3(42, 5);
+	TESTED_NAMESPACE::vector<int> v4(33, 5);
+
+	module_head("vector::operator==");
+	std::cout << (v1 == v2) << std::endl;
+	std::cout << (v2 == v3) << std::endl;
+	std::cout << (v3 == v4) << std::endl;
+	module_foot();
+	module_head("vector::operator!=");
+	std::cout << (v1 != v2) << std::endl;
+	std::cout << (v2 != v3) << std::endl;
+	std::cout << (v3 != v4) << std::endl;
+	module_foot();
+	module_head("vector::operator<");
+	std::cout << (v1 < v2) << std::endl;
+	std::cout << (v2 < v3) << std::endl;
+	std::cout << (v3 < v4) << std::endl;
+	module_foot();
+	module_head("vector::operator<=");
+	std::cout << (v1 <= v2) << std::endl;
+	std::cout << (v2 <= v3) << std::endl;
+	std::cout << (v3 <= v4) << std::endl;
+	module_foot();
+	module_head("vector::operator>");
+	std::cout << (v1 > v2) << std::endl;
+	std::cout << (v2 > v3) << std::endl;
+	std::cout << (v3 > v4) << std::endl;
+	module_foot();
+	module_head("vector::operator>=");
+	std::cout << (v1 >= v2) << std::endl;
+	std::cout << (v2 >= v3) << std::endl;
+	std::cout << (v3 >= v4) << std::endl;
+	module_foot();
+}
+
+void test_swap_nonmember()
+{
+	TESTED_NAMESPACE::vector<int> v1;
+	TESTED_NAMESPACE::vector<int> v2(42, 5);
+
+	module_head("vector::swap (non-member)");
+	TESTED_NAMESPACE::swap(v1, v2);
+	std::cout << string_vector(v1) << std::endl;
+	std::cout << v1.size() << std::endl;
+	std::cout << v1.capacity() << std::endl;
+	std::cout << string_vector(v2) << std::endl;
+	std::cout << v2.size() << std::endl;
+	std::cout << v2.capacity() << std::endl;
+	module_foot();
+}
+
 void test_vector(void)
 {
 	test_constructor();
@@ -588,4 +651,6 @@ void test_vector(void)
 	test_swap();
 	test_clear();
 	test_get_allocator();
+	test_relational_operators();
+	test_swap_nonmember();
 }

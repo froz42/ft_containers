@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:53:40 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/10 17:27:24 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/10 17:55:16 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -426,7 +426,7 @@ namespace ft
 		return (lhs < rhs);
 	}
 
-	template <class T, class Alloc>
+	template <class T>
 	bool mycomp(const T &lhs, const T &rhs)
 	{
 		return (lhs > rhs);
@@ -435,7 +435,7 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator>(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), mycomp);
+		return !(lhs <= rhs);
 	}
 
 	template <class T, class Alloc>
