@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 13:23:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/10 17:58:33 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/10 18:01:28 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,17 +142,17 @@ void test_operator_assign()
 	v1 = v2;
 	v2 = v3;
 	std::cout << string_vector(v1) << std::endl;
-	std::cout << v1.size() << std::endl;
-	std::cout << v1.capacity() << std::endl;
+	std::cout << "v1::size: " << v1.size() << std::endl;
+	std::cout << "v1::capacity: " << v1.capacity() << std::endl;
 	std::cout << string_vector(v2) << std::endl;
-	std::cout << v2.size() << std::endl;
-	std::cout << v2.capacity() << std::endl;
+	std::cout << "v2::size: " << v2.size() << std::endl;
+	std::cout << "v2::capacity: " << v2.capacity() << std::endl;
 	std::cout << string_vector(v3) << std::endl;
-	std::cout << v3.size() << std::endl;
-	std::cout << v3.capacity() << std::endl;
+	std::cout << "v3::size: " << v3.size() << std::endl;
+	std::cout << "v3::capacity: " << v3.capacity() << std::endl;
 	std::cout << string_vector(v4) << std::endl;
-	std::cout << v4.size() << std::endl;
-	std::cout << v4.capacity() << std::endl;
+	std::cout << "v4::size: " << v4.size() << std::endl;
+	std::cout << "v4::capacity: " << v4.capacity() << std::endl;
 	module_foot();
 }
 

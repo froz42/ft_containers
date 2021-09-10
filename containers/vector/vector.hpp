@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:53:40 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/10 17:55:16 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/10 18:12:34 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,9 @@ namespace ft
 			if (this != &x)
 			{
 				this->clear();
-				if (_data)
-					_alloc.deallocate(_data, _capacity);
+				if (this->_capacity < x._size)
+					this->reserve(x._size);
 				this->_size = x._size;
-				this->_capacity = x._capacity;
 				this->_data = _alloc.allocate(_capacity);
 				for (size_type i = 0; i < _size; i++)
 					_alloc.construct(&_data[i], x._data[i]);
