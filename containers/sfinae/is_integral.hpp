@@ -6,14 +6,18 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 21:57:36 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/05 22:56:47 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/11 17:20:33 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef IS_INTEGRAL_HPP
 #define IS_INTEGRAL_HPP
 
+#ifdef __APPLE__
+#include <stdint.h>
+#else
 #include <uchar.h>
+#endif
 
 namespace ft
 {
