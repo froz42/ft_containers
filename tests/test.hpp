@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 13:17:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/10 17:39:29 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/11 12:21:02 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "../containers/ft.hpp"
 #include "test.hpp"
 #include <vector>
+#include <stack>
 
 #ifndef TESTED_NAMESPACE
 # define TESTED_NAMESPACE std
@@ -39,4 +40,5 @@ void test_vector(void);
 void test_iterator(void);
 void test_sfinae(void);
 void test_pair(void);
+void test_stack(void);
 #endif
