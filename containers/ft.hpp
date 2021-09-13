@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 16:35:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/11 12:25:57 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/13 14:01:48 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,5 @@
 # include "pair/make_pair.hpp"
 # include "vector/vector.hpp"
 # include "stack/stack.hpp"
+# include "rbtree/tree.hpp"
 #endif
