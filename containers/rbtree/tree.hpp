@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/13 14:35:09 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/14 18:51:23 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,104 +16,71 @@
 #define BLACK 0
 #define RED 1
 
-#include <memory>
 #include <iostream>
 #include <iomanip>
+#include "node.hpp"
 
 namespace ft
 {
-	template <typename T>
-	struct _rbtree_node
-	{
-		_rbtree_node *left;
-		_rbtree_node *right;
-		_rbtree_node *parent;
-		T data;
-		bool color;
-
-		_rbtree_node(T &data) : left(NULL), right(NULL), parent(NULL), data(data), color(RED) {}
-		_rbtree_node(void) : left(NULL), right(NULL), parent(NULL), color(RED) {}
-		~_rbtree_node(void) {}
-
-		_rbtree_node *get_parent(void) const
-		{
-			return this->parent;
-		}
-		_rbtree_node *get_grandparent(void) const
-		{
-			if (this->parent == NULL)
-				return NULL;
-			return this->parent->parent;
-		}
-		_rbtree_node *get_sibling(void) const
-		{
-			if (this->parent == NULL)
-				return NULL;
-			if (this == this->parent->left)
-				return this->parent->right;
-			else
-				return this->parent->left;
-		}
-		_rbtree_node *get_uncle(void) const
-		{
-			if (this->parent == NULL)
-				return NULL;
-			return (this->parent->get_sibling());
-		}
-		void rotate_left(void)
-		{
-			_rbtree_node *y = this->right;
-
-			this->right = y->left;
-			if (y->left != NULL)
-				y->left->parent = this;
-			y->parent = this->parent;
-			if (this->parent == NULL)
-				this->parent = y;
-			else if (this == this->parent->left)
-				this->parent->left = y;
-			else
-				this->parent->right = y;
-			y->left = this;
-			this->parent = y;
-		}
-		void rotate_right(void)
-		{
-			_rbtree_node *y = this->left;
-
-			this->left = y->right;
-			if (y->right != NULL)
-				y->right->parent = this;
-			y->parent = this->parent;
-			if (this->parent == NULL)
-				this->parent = y;
-			else if (this == this->parent->left)
-				this->parent->left = y;
-			else
-				this->parent->right = y;
-			y->right = this;
-			this->parent = y;
-		}
-	};
 	template <typename T, typename Compare>
 	class rbtree
 	{
 	public:
-		/* typedef */
 		typedef _rbtree_node<T> node;
 		typedef _rbtree_node<T> *node_ptr;
 		typedef _rbtree_node<T> &node_ref;
 		typedef T data_type;
 		typedef Compare compare;
 		typedef std::allocator<_rbtree_node<T> > allocator;
-		/* constructor */
-		//default
-		rbtree(void) : _root(NULL), _comp(compare()) {}
+		typedef size_t size_type;
+
+		rbtree(const allocator &alloc = allocator()) : _root(NULL), _comp(compare())
+		{
+			this->_alloc = alloc;
+		}
+		rbtree(const rbtree &other) : _root(NULL), _comp(compare()), _alloc(other._alloc)
+		{
+			_recursive_copy(*this, other._root);
+		}
 
 		~rbtree(void)
 		{
 			this->clear();
 		}
+
+		rbtree &operator=(const rbtree &other)
+		{
+			if (this != &other)
+			{
+				this->clear();
+				_alloc = other._alloc;
+				_comp = other._comp;
+				_recursive_copy(*this, other._root);
+			}
+			return (*this);
+		}
+
+		rbtree copy(void) const
+		{
+			return (rbtree(*this));
+		}
+
+		size_type size(void) const
+		{
+			return (_recursive_size(this->_root));
+		}
+
+		bool empty(void) const
+		{
+			return (this->_root == NULL);
+		}
+
+		void clear(void)
+		{
+			_recursive_clear(this->_root);
+			this->_root = NULL;
+		}
+
 		/* member function */
 		void insert(T data)
 		{
@@ -129,12 +96,9 @@ namespace ft
 				n = n->parent;
 			this->_root = n;
 		}
-		void clear(void)
-		{
-			_recursive_clear(this->_root);
-		}
+		
 		// pretty print
-		void print(node *p = NULL, int indent = 0)
+		void print(node *p = NULL, int indent = 0) const
 		{
 			if (p == NULL)
 				p = this->_root;
@@ -231,14 +195,33 @@ namespace ft
 				g->color = RED;
 			}
 		}
-		void _recursive_clear(node_ptr &n)
+		void _recursive_clear(node_ptr n)
 		{
-			if (n->left != NULL)
+			if (n != NULL)
+			{
 				_recursive_clear(n->left);
-			if (n->right != NULL)
 				_recursive_clear(n->right);
-			_alloc.destroy(n);
-			_alloc.deallocate(n, 1);
+				_alloc.destroy(n);
+				_alloc.deallocate(n, 1);
+			}
+		}
+		void _recursive_copy(rbtree &dest, node_ptr src = NULL)
+		{
+			if (src == NULL)
+				src = this->_root;
+			dest.insert(src->data);
+			if (src->left != NULL)
+				_recursive_copy(dest, src->left);
+			if (src->right != NULL)
+				_recursive_copy(dest, src->right);
+		}
+		static size_type _recursive_size(const node_ptr root)
+		{
+			if (root == NULL)
+				return 0;
+			return (1
+			+ _recursive_size(root->left)
+			+ _recursive_size(root->right));
 		}
 	};
 }
