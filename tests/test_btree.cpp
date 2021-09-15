@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 18:34:07 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/15 20:33:37 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/15 22:32:47 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ void test_btree()
 	}
 	std::cout << "find:" << tree.find(5) << std::endl;
 	std::cout << "find:" << tree.find(42) << std::endl; 
+	std::cout << "size:" << tree.size() << std::endl;
+	ft::_rb_tree<int, std::less<int> > tree2(tree);
+	std::cout << "size:" << tree2.size() << std::endl;
+	tree2.print();
 	for (int i = 0; i <= 10; i++)
 	{
 		std::cout << "erase " << i << std::endl;
@@ -33,4 +37,6 @@ void test_btree()
 		tree.print();
 		std::cout << "----------------------" << std::endl;
 	}
+	std::cout << "size:" << tree.size() << std::endl;
+	tree2 = tree;
 }

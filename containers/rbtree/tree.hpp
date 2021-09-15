@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/15 20:43:55 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/15 22:34:22 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,34 @@ namespace ft
 
 			this->root = NIL;
 		}
+
+		_rb_tree(_rb_tree const &other)
+		{
+			this->_allocator = other._allocator;
+			this->_compare = other._compare;
+			this->NIL = _allocator.allocate(1);
+			NIL->parent = NIL;
+			NIL->left = NIL;
+			NIL->right = NIL;
+			NIL->color = BLACK;
+
+			this->root = NIL;
+			other.print();
+			_recursive_copy(*this, other.root, other.NIL);
+		}
+
 		~_rb_tree()
 		{
 			this->clear();
 			_allocator.deallocate(NIL, 1);
 		}
 
+		_rb_tree &operator=(_rb_tree const &other)
+		{
+			this->clear();
+			_recursive_copy(*this, other.root, other.NIL);
+			return *this;
+		}
 
 		value_type *find(value_type value)
 		{
@@ -102,7 +124,12 @@ namespace ft
 			_recursive_clear(this->root);
 			this->root = NIL;
 		}
-		
+
+		size_t size() const
+		{
+			return _recursive_size();
+		}
+
 		void print(node *p = NULL, int indent = 0) const
 		{
 			if (p == NULL)
@@ -163,7 +190,7 @@ namespace ft
 			else
 				return parent->left;
 		}
- 
+
 		node_ptr _uncle(node_ptr const node) const
 		{
 			node_ptr grand_parent = _grand_parent(node);
@@ -445,6 +472,25 @@ namespace ft
 				_allocator.destroy(x);
 				_allocator.deallocate(x, 1);
 			}
+		}
+
+		void _recursive_copy(_rb_tree &dst, node_ptr x, node_ptr x_nil)
+		{
+			if (x != x_nil)
+			{
+				_recursive_copy(dst, x->left, x_nil);
+				dst.insert(x->data);
+				_recursive_copy(dst, x->right, x_nil);
+			}
+		}
+
+		size_t _recursive_size(node_ptr x = NULL) const
+		{
+			if (x == NULL)
+				x = this->root;
+			if (x == NIL)
+				return 0;
+			return 1 + _recursive_size(x->left) + _recursive_size(x->right);
 		}
 	};
 }
