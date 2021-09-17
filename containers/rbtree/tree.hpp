@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/15 22:34:22 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/17 12:32:54 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,15 @@
 
 #include <iostream>
 #include <iomanip>
+#include "tree_iterator.hpp"
+#include "../iterators/reverse_iterator.hpp"
 
 #define BLACK false
 #define RED true
 
 // ref https://www.programiz.com/dsa/insertion-in-a-red-black-tree
+
+//TODO: implentent iterator https://github.com/DimitriDaSilva/42_ft_containers/blob/main/containers/utils/bidirectional_iterator.hpp
 
 namespace ft
 {
@@ -43,8 +47,15 @@ namespace ft
 		typedef Compare compare;
 		typedef Allocator allocator;
 		typedef T value_type;
+		typedef size_t size_type;
+		typedef std::ptrdiff_t difference_type;
+		typedef ft::tree_iterator<_rb_tree<T, Compare, Allocator> > iterator;
+		typedef ft::tree_iterator<_rb_tree<T, Compare, Allocator> const> const_iterator;
+		typedef ft::reverse_iterator<iterator> reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+
 		// constructors
-		_rb_tree(allocator allocator_ = allocator()) : _compare(compare())
+		_rb_tree(allocator allocator_ = allocator()) : _compare(compare()), _size(0)
 		{
 			this->_allocator = allocator_;
 
@@ -61,6 +72,7 @@ namespace ft
 		{
 			this->_allocator = other._allocator;
 			this->_compare = other._compare;
+			this->_size = other._size;
 			this->NIL = _allocator.allocate(1);
 			NIL->parent = NIL;
 			NIL->left = NIL;
@@ -76,6 +88,47 @@ namespace ft
 		{
 			this->clear();
 			_allocator.deallocate(NIL, 1);
+		}
+
+		// iterators
+		iterator begin()
+		{
+			return iterator(_min(), root, NIL);
+		}
+
+		const_iterator begin() const
+		{
+			return const_iterator(_min(), root, NIL);
+		}
+
+		iterator end()
+		{
+			return iterator(NIL, root, NIL);
+		}
+
+		const_iterator end() const
+		{
+			return const_iterator(NIL, root, NIL);
+		}
+
+		reverse_iterator rbegin()
+		{
+			return reverse_iterator(NIL, root, NIL);
+		}
+
+		const_reverse_iterator rbegin() const
+		{
+			return const_reverse_iterator(NIL, root, NIL);
+		}
+
+		reverse_iterator rend()
+		{
+			return reverse_iterator(_min(), root, NIL);
+		}
+
+		const_reverse_iterator rend() const
+		{
+			return const_reverse_iterator(_min(), root, NIL);
 		}
 
 		_rb_tree &operator=(_rb_tree const &other)
@@ -101,6 +154,7 @@ namespace ft
 
 			_insert_recursive(this->root, n);
 
+			_size++;
 			if (n->parent == NIL)
 				n->color = BLACK;
 			else
@@ -123,11 +177,12 @@ namespace ft
 		{
 			_recursive_clear(this->root);
 			this->root = NIL;
+			this->_size = 0;
 		}
 
-		size_t size() const
+		size_type size() const
 		{
-			return _recursive_size();
+			return _size;
 		}
 
 		void print(node *p = NULL, int indent = 0) const
@@ -160,10 +215,11 @@ namespace ft
 		}
 
 	private:
-		node_ptr root;
-		node_ptr NIL;		  //sentinel
-		compare _compare;	  // used to compare nodes
-		allocator _allocator; // used to allocate nodes
+		node_ptr 	root;
+		node_ptr 	NIL;		  //sentinel
+		compare 	_compare;	  // used to compare nodes
+		allocator	_allocator; // used to allocate nodes
+		size_type	_size; 		  // number of nodes in the tree (to have O(1) size())
 
 		// new node
 		node *_new_node(value_type data)
@@ -176,6 +232,22 @@ namespace ft
 			return node;
 		}
 
+		node_ptr _min()
+		{
+			node_ptr p = this->root;
+			while (p->left != NIL)
+				p = p->left;
+			return p;
+		}
+
+		node_ptr _max()
+		{
+			node_ptr p = this->root;
+			while (p->right != NIL)
+				p = p->right;
+			return p;
+		}
+		
 		node_ptr _grand_parent(node_ptr const node) const
 		{
 			node_ptr grand_parent = node->parent->parent;
@@ -386,6 +458,7 @@ namespace ft
 			}
 			_allocator.destroy(z);
 			_allocator.deallocate(z, 1);
+			_size--;
 			if (y_original_color == BLACK)
 				_delete_fixup(x);
 		}
@@ -482,15 +555,6 @@ namespace ft
 				dst.insert(x->data);
 				_recursive_copy(dst, x->right, x_nil);
 			}
-		}
-
-		size_t _recursive_size(node_ptr x = NULL) const
-		{
-			if (x == NULL)
-				x = this->root;
-			if (x == NIL)
-				return 0;
-			return 1 + _recursive_size(x->left) + _recursive_size(x->right);
 		}
 	};
 }

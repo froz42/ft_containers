@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:53:40 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/11 12:39:48 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/17 12:20:32 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,7 +274,6 @@ namespace ft
 			return iterator(&_data[i]);
 		}
 		
-		//TODO: rewrite this function
 		void insert(iterator position, size_type n, const value_type &val)
 		{
 			size_type i = &*position - &*begin();
@@ -287,7 +286,6 @@ namespace ft
 			_size += n;
 		}
 
-		//TODO: rewrite this function
 		template <class InputIterator>
 		void insert(iterator position, InputIterator first, InputIterator last,
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
@@ -426,7 +424,7 @@ namespace ft
 	}
 
 	template <class T>
-	bool mycomp(const T &lhs, const T &rhs)
+	static bool mycomp(const T &lhs, const T &rhs)
 	{
 		return (lhs > rhs);
 	}
