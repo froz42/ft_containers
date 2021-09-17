@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 22:24:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/17 12:24:48 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/17 18:03:34 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ namespace ft
 	{
 	public:
 		// typedef typename Node::value_type value_type;
-		typedef Node value_type;
-		typedef value_type *node_ptr;
+		typedef Node node_ptr;
 		typedef Node *pointer;
 		typedef Node &reference;
 		typedef Node const *const_pointer;
@@ -40,9 +39,9 @@ namespace ft
 		~tree_iterator(void) {}
 
 		//overload for const iterator
-		operator tree_iterator<value_type const>(void) const
+		operator tree_iterator<node_ptr const>(void) const
 		{
-			return tree_iterator<value_type const>(_node, root, NIL);
+			return tree_iterator<node_ptr const>(_node, root, NIL);
 		}
 
 		tree_iterator &operator=(const tree_iterator &other)

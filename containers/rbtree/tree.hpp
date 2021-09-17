@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/17 17:23:23 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/17 18:09:53 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <iomanip>
 #include "tree_iterator.hpp"
 #include "../iterators/reverse_iterator.hpp"
+#include "../pair/make_pair.hpp"
 
 #define BLACK false
 #define RED true
@@ -47,8 +48,8 @@ namespace ft
 		typedef T value_type;
 		typedef size_t size_type;
 		typedef std::ptrdiff_t difference_type;
-		typedef ft::tree_iterator<_rb_tree<T, Compare, Allocator> > iterator;
-		typedef ft::tree_iterator<_rb_tree<T, Compare, Allocator> const> const_iterator;
+		typedef ft::tree_iterator<_rb_tree<T, Compare, Allocator>::node_ptr > iterator;
+		typedef ft::tree_iterator<_rb_tree<T, Compare, Allocator>::node_ptr const> const_iterator;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -157,22 +158,27 @@ namespace ft
 		}
 
 		//TODO: return a pair: (value, bool)
-		value_type *insert(value_type value)
+		ft::pair<iterator, bool> insert(value_type value)
 		{
 			node_ptr n = _new_node(value);
 
-			_insert_recursive(this->root, n);
+			ft::pair<node_ptr, bool> r = _insert_recursive(this->root, n);
 
-			_size++;
-			if (n->parent == NIL)
-				n->color = BLACK;
+			if (r.second)
+			{
+				this->_size++;
+				if (n->parent == NIL)
+					n->color = BLACK;
+				else
+					_insert_fixup(n);
+				//search for new root
+				this->root = n;
+				while (this->root->parent != NIL)
+					this->root = this->root->parent;
+				return ft::make_pair(iterator(n, this->root, NIL), true); 
+			}
 			else
-				_insert_fixup(n);
-			//search for new root
-			this->root = n;
-			while (this->root->parent != NIL)
-				this->root = this->root->parent;
-			return (&n->data);
+				return ft::make_pair(iterator(r.first, this->root, NIL), false);
 		}
 
 		void remove(value_type value)
@@ -230,11 +236,11 @@ namespace ft
 		}
 
 	private:
-		node_ptr 	root;
-		node_ptr 	NIL;		  //sentinel
-		compare 	_compare;	  // used to compare nodes
-		allocator	_allocator; // used to allocate nodes
-		size_type	_size; 		  // number of nodes in the tree (to have O(1) size())
+		node_ptr root;
+		node_ptr NIL;		  //sentinel
+		compare _compare;	  // used to compare nodes
+		allocator _allocator; // used to allocate nodes
+		size_type _size;	  // number of nodes in the tree (to have O(1) size())
 
 		// new node
 		node *_new_node(value_type data)
@@ -262,7 +268,7 @@ namespace ft
 				p = p->right;
 			return p;
 		}
-		
+
 		node_ptr _grand_parent(node_ptr const node) const
 		{
 			node_ptr grand_parent = node->parent->parent;
@@ -320,32 +326,30 @@ namespace ft
 			x->parent = y;
 		}
 
-		// insert
-		void _insert_recursive(node_ptr root, node_ptr n)
+		// insert do not allow duplicates
+		// return the new node or the node that already exists
+		ft::pair<node_ptr, bool> _insert_recursive(node_ptr root, node_ptr n)
 		{
 			if (root != NIL && _compare(n->data, root->data))
 			{
 				if (root->left != NIL)
-				{
-					_insert_recursive(root->left, n);
-					return;
-				}
+					return _insert_recursive(root->left, n);
 				else
 					root->left = n;
 			}
-			else if (root != NIL)
+			else if (root != NIL && _compare(root->data, n->data))
 			{
 				if (root->right != NIL)
-				{
-					_insert_recursive(root->right, n);
-					return;
-				}
+					return _insert_recursive(root->right, n);
 				else
 					root->right = n;
 			}
+			else if (root != NIL)
+				return ft::make_pair(root, false);
 			n->parent = root;
 			n->color = RED;
 			n->left = n->right = NIL;
+			return ft::make_pair(n, true);
 		}
 
 		// insert fixup

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 12:34:25 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/17 17:22:54 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/17 17:57:58 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ namespace ft
 
 		allocator_type get_allocator() const
 		{
-			return (this->_allocator);
+			return (_allocator);
 		}
 
 		// element access //
@@ -107,7 +107,7 @@ namespace ft
 		mapped_type &at(const key_type &key)
 		{
 			value_type *v =
-				this->_tree.find(ft::make_pair(key, mapped_type()));
+				_tree.find(ft::make_pair(key, mapped_type()));
 			if (v)
 				return (v->second);
 			throw std::out_of_range("map::at");
@@ -116,13 +116,23 @@ namespace ft
 		const mapped_type &at(const key_type &key) const
 		{
 			value_type *v =
-				this->_tree.find(ft::make_pair(key, mapped_type()));
+				_tree.find(ft::make_pair(key, mapped_type()));
 			if (v)
 				return (v->second);
 			throw std::out_of_range("map::at");
 		}
 
-		mapped_type &operator[](const key_type &key);
+		mapped_type &operator[](const key_type &key)
+		{
+			ft::pair<iterator, bool> res = _tree.find(ft::make_pair(key, mapped_type()));
+			if (res.second)
+				return (res.first->second);
+			else
+			{
+				res = _tree.insert(ft::make_pair(key, mapped_type()));
+				return (res.first->second);
+			}
+		}
 
 		// iterator //
 
@@ -190,10 +200,17 @@ namespace ft
 			this->_tree.clear();
 		}
 
-		ft::pair<iterator, bool> insert(const value_type &value);
+		ft::pair<iterator, bool> insert(const value_type &value)
+		{
+			return (this->_tree.insert(value));
+		}
 
 		template <class InputIt>
-		void insert(InputIt first, InputIt last);
+		void insert(InputIt first, InputIt last)
+		{
+			for (; first != last; ++first)
+				this->_tree.insert(*first);
+		}
 
 		void erase(iterator pos);
 
