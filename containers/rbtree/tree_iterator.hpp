@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 22:24:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/17 23:28:47 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 00:06:43 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ namespace ft
 	class tree_iterator
 	{
 	public:
-		// typedef typename Node::value_type value_type;
-		typedef Node node_ptr;
-		typedef Node *pointer;
-		typedef Node &reference;
-		typedef Node const *const_pointer;
-		typedef Node const &const_reference;
+		typedef typename Node::value_type value_type;
+		typedef Node *node_ptr;
+		typedef value_type *pointer;
+		typedef value_type &reference;
+		typedef value_type const *const_pointer;
+		typedef value_type const &const_reference;
 		typedef std::bidirectional_iterator_tag iterator_category;
 		typedef typename std::ptrdiff_t difference_type;
 
@@ -71,7 +71,7 @@ namespace ft
 
 		const_reference operator*(void) const
 		{
-			return node->data;
+			return *(node->data);
 		}
 
 		pointer operator->(void)

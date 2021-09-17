@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/17 23:35:56 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 00:06:05 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ namespace ft
 	template <class T>
 	struct _rb_node
 	{
+		typedef T value_type;
 		_rb_node *parent;
 		_rb_node *left;
 		_rb_node *right;
@@ -48,8 +49,8 @@ namespace ft
 		typedef T value_type;
 		typedef size_t size_type;
 		typedef std::ptrdiff_t difference_type;
-		typedef ft::tree_iterator<_rb_tree<T, Compare, Allocator>::node_ptr > iterator;
-		typedef ft::tree_iterator<_rb_tree<T, Compare, Allocator>::node_ptr const> const_iterator;
+		typedef ft::tree_iterator<_rb_tree<T, Compare, Allocator>::node > iterator;
+		typedef ft::tree_iterator<_rb_tree<T, Compare, Allocator>::node const> const_iterator;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 

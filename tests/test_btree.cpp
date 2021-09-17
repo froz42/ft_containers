@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 18:34:07 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/17 23:38:16 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 00:07:29 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void test_btree()
 		std::cout << "----------------------" << std::endl; 
 	}
 	std::cout << "find:" << *tree.find(5) << std::endl;
-	std::cout << "find:" << (*tree.find(42))->data << std::endl; 
+	std::cout << "find:" << (tree.find(42) == tree.end()) << std::endl; 
 	std::cout << "size:" << tree.size() << std::endl;
 	ft::_rb_tree<int, std::less<int> > tree2(tree);
 	std::cout << "size:" << tree2.size() << std::endl;
