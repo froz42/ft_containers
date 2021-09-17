@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 22:24:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/17 18:03:34 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/17 23:28:47 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,25 @@ namespace ft
 		typedef std::bidirectional_iterator_tag iterator_category;
 		typedef typename std::ptrdiff_t difference_type;
 
+		node_ptr node;
+
 		tree_iterator(node_ptr node, node_ptr root, node_ptr NIL)
-			: _node(node), root(root), NIL(NIL) {}
-		tree_iterator(void) : _node(NULL), root(NULL), NIL(NULL) {}
+			: node(node), root(root), NIL(NIL) {}
+		tree_iterator(void) : node(NULL), root(NULL), NIL(NULL) {}
 		tree_iterator(const tree_iterator &other)
-			: _node(other._node), root(other.root), NIL(other.NIL) {}
+			: node(other.node), root(other.root), NIL(other.NIL) {}
 
 		~tree_iterator(void) {}
 
 		//overload for const iterator
 		operator tree_iterator<node_ptr const>(void) const
 		{
-			return tree_iterator<node_ptr const>(_node, root, NIL);
+			return tree_iterator<node_ptr const>(node, root, NIL);
 		}
 
 		tree_iterator &operator=(const tree_iterator &other)
 		{
-			_node = other._node;
+			node = other.node;
 			root = other.root;
 			NIL = other.NIL;
 			return *this;
@@ -54,22 +56,22 @@ namespace ft
 
 		bool operator==(const tree_iterator &other) const
 		{
-			return _node == other._node;
+			return node == other.node;
 		}
 
 		bool operator!=(const tree_iterator &other) const
 		{
-			return _node != other._node;
+			return node != other.node;
 		}
 
 		reference operator*(void)
 		{
-			return _node->data;
+			return node->data;
 		}
 
 		const_reference operator*(void) const
 		{
-			return _node->data;
+			return node->data;
 		}
 
 		pointer operator->(void)
@@ -84,8 +86,8 @@ namespace ft
 
 		tree_iterator &operator++(void)
 		{
-			if (_node != NIL)
-				_node = _next();
+			if (node != NIL)
+				node = _next();
 			return *this;
 		}
 
@@ -98,10 +100,10 @@ namespace ft
 
 		tree_iterator &operator--(void)
 		{
-			if (_node != NIL)
-				_node = _prev();
+			if (node != NIL)
+				node = _prev();
 			else
-				_node = max(root);
+				node = max(root);
 			return *this;
 		}
 
@@ -114,7 +116,6 @@ namespace ft
 	
 
 	private:
-		node_ptr _node;
 		node_ptr root;
 		node_ptr NIL;
 
@@ -135,7 +136,7 @@ namespace ft
 		//find the previous node in the tree
 		node_ptr _prev(void)
 		{
-			node_ptr node = _node;
+			node_ptr node = node;
 			node_ptr previous = NIL;
 
 			//       3 <--- start
@@ -157,7 +158,7 @@ namespace ft
 		//find the next node in the tree
 		node_ptr _next(void)
 		{
-			node_ptr node = _node;
+			node_ptr node = node;
 			node_ptr next = NIL;
 
 			if (node->right != NIL)

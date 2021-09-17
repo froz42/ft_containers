@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 12:34:25 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/17 17:57:58 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/17 23:49:22 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,31 +106,33 @@ namespace ft
 
 		mapped_type &at(const key_type &key)
 		{
-			value_type *v =
+			iterator v =
 				_tree.find(ft::make_pair(key, mapped_type()));
-			if (v)
+			if (v != _tree.end())
 				return (v->second);
 			throw std::out_of_range("map::at");
 		}
 
 		const mapped_type &at(const key_type &key) const
 		{
-			value_type *v =
+			const_iterator v =
 				_tree.find(ft::make_pair(key, mapped_type()));
-			if (v)
+			if (v != _tree.end())
 				return (v->second);
 			throw std::out_of_range("map::at");
 		}
 
 		mapped_type &operator[](const key_type &key)
 		{
-			ft::pair<iterator, bool> res = _tree.find(ft::make_pair(key, mapped_type()));
-			if (res.second)
-				return (res.first->second);
+			iterator res = _tree.find(ft::make_pair(key, mapped_type()));
+
+			if (res != _tree.end())
+				return (res->second);
 			else
 			{
-				res = _tree.insert(ft::make_pair(key, mapped_type()));
-				return (res.first->second);
+				ft::pair<iterator, bool> res2 = _tree.insert(
+					ft::make_pair(key, mapped_type()));
+				return (res2->first->second);
 			}
 		}
 
@@ -212,21 +214,53 @@ namespace ft
 				this->_tree.insert(*first);
 		}
 
-		void erase(iterator pos);
+		iterator insert(iterator hint, const value_type &value)
+		{
+			return (this->_tree.insert(hint, value));
+		}
+		
+		void erase(iterator pos)
+		{
+			this->_tree.erase(pos);
+		}
 
-		void erase(iterator first, iterator last);
+		void erase(iterator first, iterator last)
+		{
+			for (; first != last; ++first)
+				this->_tree.erase(first);
+		}
 
-		size_type erase(const key_type &key);
+		size_type erase(const key_type &key)
+		{
+			return (this->_tree.erase(key));
+		}
 
-		void swap(map &other);
+		void swap(map &other)
+		{
+			this->_tree = other._tree;
+		}
 
 		// lookups //
 
-		size_type count(const key_type &key) const;
+		size_type count(const key_type &key) const
+		{
+			iterator res = _tree.find(ft::make_pair(key, mapped_type()));
 
-		iterator find(const key_type &key);
+			if (res != _tree.end())
+				return (1);
+			else
+				return (0);
+		}
 
-		const_iterator find(const key_type &key) const;
+		iterator find(const key_type &key)
+		{
+			return (_tree.find(ft::make_pair(key, mapped_type())));
+		}
+
+		const_iterator find(const key_type &key) const
+		{
+			return (_tree.find(ft::make_pair(key, mapped_type())));
+		}
 
 		ft::pair<iterator, iterator> equal_range(const Key &key);
 
@@ -242,9 +276,15 @@ namespace ft
 
 		// observers //
 
-		key_compare key_comp(void) const;
+		key_compare key_comp(void) const
+		{
+			return (_key_comp);
+		}
 
-		value_type value_comp(void) const;
+		value_type value_comp(void) const
+		{
+			return (_value_comp);
+		}
 
 	private:
 		_rb_tree<value_type, value_compare> _tree;

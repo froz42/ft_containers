@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/17 18:09:53 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/17 23:35:56 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,28 +137,27 @@ namespace ft
 			return *this;
 		}
 
-		value_type *find(value_type value)
+		iterator find(value_type const &value)
 		{
 			node_ptr found = _find_node(value);
 
 			if (!found)
-				return (NULL);
+				return end();
 			else
-				return (&found->data);
+				return iterator(found, root, NIL);
 		}
 
-		value_type *find(value_type value) const
+		const_iterator find(value_type const &value) const
 		{
 			node_ptr found = _find_node(value);
 
 			if (!found)
-				return (NULL);
+				return end();
 			else
-				return (&found->data);
+				return iterator(found, root, NIL);
 		}
 
-		//TODO: return a pair: (value, bool)
-		ft::pair<iterator, bool> insert(value_type value)
+		ft::pair<iterator, bool> insert(value_type const &value)
 		{
 			node_ptr n = _new_node(value);
 
@@ -178,15 +177,48 @@ namespace ft
 				return ft::make_pair(iterator(n, this->root, NIL), true); 
 			}
 			else
+			{
+				_allocator.destroy(n);
+				_allocator.deallocate(n, 1);
 				return ft::make_pair(iterator(r.first, this->root, NIL), false);
+			}
 		}
 
-		void remove(value_type value)
+		iterator insert(iterator hint, const value_type &value)
+		{
+			node_ptr next = _next(hint);
+
+			// check if hint is valid
+			
+			if (_compare((*hint).data, value) && _compare(value, next->data))
+			{
+				node_ptr n = _new_node(value);
+
+				ft::pair<node_ptr, bool> r = _insert_recursive(hint.node, n);
+				_size++;
+				return iterator(r.first, this->root, NIL);
+			}
+			else
+				return insert(value).first;
+		}
+
+		size_type erase(value_type const &value)
 		{
 			node_ptr n = _find_node(value);
 
 			if (n)
+			{
 				_delete_node(n);
+				return (1);
+			}
+			else
+				return (0);
+		}
+
+		void erase(iterator pos)
+		{
+			if (pos.node != NIL)
+				_delete_node(pos.node);
 		}
 
 		void clear()
@@ -243,7 +275,7 @@ namespace ft
 		size_type _size;	  // number of nodes in the tree (to have O(1) size())
 
 		// new node
-		node *_new_node(value_type data)
+		node *_new_node(value_type const &data)
 		{
 			node *node = _allocator.allocate(1);
 			node->data = data;
@@ -410,7 +442,7 @@ namespace ft
 			root->color = BLACK;
 		}
 
-		node_ptr _find_node(value_type const data)
+		node_ptr _find_node(value_type const &data) const
 		{
 			node_ptr current = this->root;
 			while (current != NIL)
@@ -574,6 +606,43 @@ namespace ft
 				dst.insert(x->data);
 				_recursive_copy(dst, x->right, x_nil);
 			}
+		}
+
+		node_ptr _prev(node_ptr node)
+		{
+			node_ptr previous = NIL;
+
+			//       3 <--- start
+			//     /   \
+			//    1     5
+			//   / \
+			//  0   2 <-- target
+			if (node->left != NIL)
+				return max(node->left);
+			previous = node->parent;
+			while (previous != NIL && node == previous->left)
+			{
+				node = previous;
+				previous = previous->parent;
+			}
+			return previous;
+		}
+
+		//find the next node in the tree
+		node_ptr _next(node_ptr node)
+		{
+			node_ptr next = NIL;
+
+			if (node->right != NIL)
+				return min(node->right);
+			
+			next = node->parent;
+			while (next != NIL && node == next->right)
+			{
+				node = next;
+				next = next->parent;
+			}
+			return next;
 		}
 	};
 }
