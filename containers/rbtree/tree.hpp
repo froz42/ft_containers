@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/17 12:32:54 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/17 17:23:23 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 #define RED true
 
 // ref https://www.programiz.com/dsa/insertion-in-a-red-black-tree
-
-//TODO: implentent iterator https://github.com/DimitriDaSilva/42_ft_containers/blob/main/containers/utils/bidirectional_iterator.hpp
 
 namespace ft
 {
@@ -148,7 +146,18 @@ namespace ft
 				return (&found->data);
 		}
 
-		void insert(value_type value)
+		value_type *find(value_type value) const
+		{
+			node_ptr found = _find_node(value);
+
+			if (!found)
+				return (NULL);
+			else
+				return (&found->data);
+		}
+
+		//TODO: return a pair: (value, bool)
+		value_type *insert(value_type value)
 		{
 			node_ptr n = _new_node(value);
 
@@ -163,6 +172,7 @@ namespace ft
 			this->root = n;
 			while (this->root->parent != NIL)
 				this->root = this->root->parent;
+			return (&n->data);
 		}
 
 		void remove(value_type value)
@@ -183,6 +193,11 @@ namespace ft
 		size_type size() const
 		{
 			return _size;
+		}
+
+		size_type max_size() const
+		{
+			return _allocator.max_size();
 		}
 
 		void print(node *p = NULL, int indent = 0) const

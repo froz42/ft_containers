@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 12:34:25 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/17 13:41:57 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/17 17:22:54 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <iostream>
 #include <memory>
 #include "../rbtree/tree.hpp"
-#include "../pair/pair.hpp"
+#include "../pair/make_pair.hpp"
 
 namespace ft
 {
@@ -40,18 +40,6 @@ namespace ft
 		typedef const value_type &const_reference;
 		typedef value_type *pointer;
 		typedef const value_type *const_pointer;
-		typedef
-			typename _rb_tree<value_type, key_compare>::iterator
-				iterator;
-		typedef
-			typename _rb_tree<value_type, key_compare>::const_iterator
-				const_iterator;
-		typedef
-			typename _rb_tree<value_type, key_compare>::reverse_iterator
-				reverse_iterator;
-		typedef
-			typename _rb_tree<value_type, key_compare>::const_reverse_iterator
-				const_reverse_iterator;
 
 		// help compare key
 		class value_compare
@@ -61,64 +49,146 @@ namespace ft
 			{
 				return (key_compare()(a.first, b.first));
 			}
+			value_compare &operator=(const value_compare &) { return *this; }
 		};
 
-		// constructors
-		map(void);
+		typedef
+			typename _rb_tree<value_type, value_compare>::iterator
+				iterator;
+		typedef
+			typename _rb_tree<value_type, value_compare>::const_iterator
+				const_iterator;
+		typedef
+			typename _rb_tree<value_type, value_compare>::reverse_iterator
+				reverse_iterator;
+		typedef
+			typename _rb_tree<value_type, value_compare>::const_reverse_iterator
+				const_reverse_iterator;
 
-		explicit map(const Compare &comp, const Allocator &alloc = Allocator());
+		// constructors
+		explicit map(const key_compare &comp = key_compare(),
+					 const allocator_type &alloc = allocator_type())
+			: _tree()
+		{
+			this->_allocator = alloc;
+			this->_key_comp = comp;
+			this->_value_comp = value_compare();
+		}
 
 		template <class InputIt>
 		map(InputIt first, InputIt last, const Compare &comp = Compare(),
 			const Allocator &alloc = Allocator());
 
-		map(const map &other);
+		map(const map &other)
+		{
+			this->_allocator = other._allocator;
+			this->_key_comp = other._key_comp;
+			this->_value_comp = other._value_comp;
+			this->_tree = other._tree;
+		}
 
-		~map(void);
+		~map(void) {}
 
-		map &operator=(const map &other);
+		map &operator=(const map &other)
+		{
+			this->_allocator = other._allocator;
+			this->_key_comp = other._key_comp;
+			this->_value_comp = other._value_comp;
+			this->_tree = other._tree;
+		}
 
-		allocator_type get_allocator() const;
+		allocator_type get_allocator() const
+		{
+			return (this->_allocator);
+		}
 
 		// element access //
 
-		mapped_type &at(const key_type &key);
+		mapped_type &at(const key_type &key)
+		{
+			value_type *v =
+				this->_tree.find(ft::make_pair(key, mapped_type()));
+			if (v)
+				return (v->second);
+			throw std::out_of_range("map::at");
+		}
 
-		const mapped_type &at(const key_type &key) const;
+		const mapped_type &at(const key_type &key) const
+		{
+			value_type *v =
+				this->_tree.find(ft::make_pair(key, mapped_type()));
+			if (v)
+				return (v->second);
+			throw std::out_of_range("map::at");
+		}
 
 		mapped_type &operator[](const key_type &key);
 
-		const mapped_type &operator[](const key_type &key) const;
-
 		// iterator //
 
-		iterator begin(void);
+		iterator begin(void)
+		{
+			return (this->_tree.begin());
+		}
 
-		const_iterator begin(void) const;
+		const_iterator begin(void) const
+		{
+			return (this->_tree.begin());
+		}
 
-		iterator end(void);
+		iterator end(void)
+		{
+			return (this->_tree.end());
+		}
 
-		const_iterator end(void) const;
+		const_iterator end(void) const
+		{
+			return (this->_tree.end());
+		}
 
-		reverse_iterator rbegin(void);
+		reverse_iterator rbegin(void)
+		{
+			return (this->_tree.rbegin());
+		}
 
-		const_reverse_iterator rbegin(void) const;
+		const_reverse_iterator rbegin(void) const
+		{
+			return (this->_tree.rbegin());
+		}
 
-		reverse_iterator rend(void);
+		reverse_iterator rend(void)
+		{
+			return (this->_tree.rend());
+		}
 
-		const_reverse_iterator rend(void) const;
+		const_reverse_iterator rend(void) const
+		{
+			return (this->_tree.rend());
+		}
 
 		// capacity //
 
-		bool empty(void) const;
+		bool empty(void) const
+		{
+			return (this->_tree.size() == 0);
+		}
 
-		size_type size(void) const;
+		size_type size(void) const
+		{
+			return (this->_tree.size());
+		}
 
-		size_type max_size(void) const;
+		size_type max_size(void) const
+		{
+			return (this->_tree.max_size());
+		}
 
 		// modifiers //
 
-		void clear(void);
+		void clear(void)
+		{
+			this->_tree.clear();
+		}
 
 		ft::pair<iterator, bool> insert(const value_type &value);
 
@@ -158,6 +228,12 @@ namespace ft
 		key_compare key_comp(void) const;
 
 		value_type value_comp(void) const;
+
+	private:
+		_rb_tree<value_type, value_compare> _tree;
+		allocator_type _allocator;
+		key_compare _key_comp;
+		value_compare _value_comp;
 	};
 
 	// non-member functions //
