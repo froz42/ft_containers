@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 17:12:49 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 14:38:05 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 15:29:00 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,13 @@ static void test_constructor(void)
 	m2.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test2"), 6));
 
 
-	TESTED_NAMESPACE::map<std::string, int> m3;
+	TESTED_NAMESPACE::map<std::string, int>::iterator it = m2.begin();
+	TESTED_NAMESPACE::map<std::string, int>::iterator it2 = m2.end();
 
-	m3.insert(m2.end(), m2.end());
+	std::cout << "m2::begin: " << it->first << std::endl;
+
+	TESTED_NAMESPACE::map<std::string, int> m3;
+	m3.insert(it, it2);
 	module_head("map::constructor(map<std::string, int>) (not empty)");
 	std::cout << "m3::size: " << m3.size() << std::endl;
 	module_foot();

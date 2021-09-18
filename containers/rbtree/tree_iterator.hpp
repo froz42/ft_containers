@@ -6,14 +6,15 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 22:24:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 14:41:15 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 15:47:13 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TREE_ITERATOR_HPP
 #define TREE_ITERATOR_HPP
 
-#include "tree.hpp"
+#include <iterator> // std::bidirectional_iterator_tag
+#include <cstddef>	// std::ptrdiff_t, NULL
 
 namespace ft
 {
@@ -21,29 +22,32 @@ namespace ft
 	class tree_iterator
 	{
 	public:
-		typedef typename Node::value_type value_type;
-		typedef Node *node_ptr;
-		typedef value_type *pointer;
-		typedef value_type &reference;
-		typedef value_type const *const_pointer;
-		typedef value_type const &const_reference;
-		typedef std::bidirectional_iterator_tag iterator_category;
+		typedef Node value_type;
+		typedef value_type *node_ptr;
+		typedef typename Node::value_type const data_type;
+		typedef data_type &reference;
+		typedef data_type const &const_reference;
+		typedef data_type *pointer;
+		typedef data_type const *const_pointer;
 		typedef typename std::ptrdiff_t difference_type;
+		typedef std::bidirectional_iterator_tag iterator_category;
 
 		node_ptr node;
 
 		tree_iterator(node_ptr node, node_ptr root, node_ptr NIL)
 			: node(node), root(root), NIL(NIL) {}
+
 		tree_iterator(void) : node(NULL), root(NULL), NIL(NULL) {}
+
 		tree_iterator(const tree_iterator &other)
 			: node(other.node), root(other.root), NIL(other.NIL) {}
 
-		virtual ~tree_iterator(void) {}
+		~tree_iterator(void) {}
 
 		//overload for const iterator
-		operator tree_iterator<node_ptr const>(void) const
+		operator tree_iterator<value_type const>(void) const
 		{
-			return tree_iterator<node_ptr const>(node, root, NIL);
+			return tree_iterator<value_type const>(node, root, NIL);
 		}
 
 		tree_iterator &operator=(const tree_iterator &other)
@@ -113,7 +117,6 @@ namespace ft
 			--(*this);
 			return tmp;
 		}
-	
 
 	private:
 		node_ptr root;
@@ -136,9 +139,9 @@ namespace ft
 		//find the previous node in the tree
 		node_ptr _prev(void)
 		{
-			node_ptr node = node;
+			node_ptr n = node;
 			node_ptr previous = NIL;
-			
+
 			if (node->left != NIL)
 				return max(node->left);
 			previous = node->parent;
@@ -153,16 +156,16 @@ namespace ft
 		//find the next node in the tree
 		node_ptr _next(void)
 		{
-			node_ptr node = node;
+			node_ptr n = node;
 			node_ptr next = NIL;
 
-			if (node->right != NIL)
-				return min(node->right);
-			
-			next = node->parent;
+			if (n->right != NIL)
+				return min(n->right);
+
+			next = n->parent;
 			while (next != NIL && node == next->right)
 			{
-				node = next;
+				n = next;
 				next = next->parent;
 			}
 			return next;

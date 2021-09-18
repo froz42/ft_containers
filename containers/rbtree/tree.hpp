@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 14:27:27 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 15:32:35 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,16 @@ namespace ft
 	{
 	public:
 		// typedef
-		typedef _rb_node<T> node;
-		typedef node *node_ptr;
+
 		typedef Compare compare;
 		typedef Allocator allocator;
 		typedef T value_type;
 		typedef size_t size_type;
+		typedef _rb_node<value_type> node;
+		typedef node *node_ptr;
 		typedef std::ptrdiff_t difference_type;
 		typedef ft::tree_iterator<node> iterator;
-		typedef ft::tree_iterator<node const> const_iterator;
+		typedef ft::tree_iterator<node> const_iterator;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
