@@ -6,11 +6,12 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 17:12:49 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 16:07:15 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 16:19:50 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test.hpp"
+#include <sstream>
 
 static void test_constructor(void)
 {
@@ -98,6 +99,34 @@ static void test_insert(void)
 	it = m1.insert(m1.begin(), TESTED_NAMESPACE::make_pair(static_cast<std::string>("test2"), 7));
 	std::cout << "it.first.first: " << it->first << std::endl;
 	std::cout << "it.first.second: " << it->second << std::endl;
+	module_foot();
+
+	TESTED_NAMESPACE::map<std::string, int> m2;
+
+	module_head("map::insert(iterator, iterator)");
+	m2.insert(m1.begin(), m1.end());
+	std::cout << "m2.size: " << m2.size() << std::endl;
+	std::cout << "m2.empty: " << m2.empty() << std::endl;
+	module_foot();
+
+	module_head("map::insert(iterator, iterator) duplicate");
+	m2.insert(m1.begin(), m1.end());
+	std::cout << "m2.size: " << m2.size() << std::endl;
+	std::cout << "m2.empty: " << m2.empty() << std::endl;
+	module_foot();
+
+	module_head("map::insert(value) time");
+	TESTED_NAMESPACE::map<std::string, int> m3;
+	for (int i = 0; i < 10000; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		m3.insert(TESTED_NAMESPACE::make_pair(ss.str(), i));
+	}
+	module_foot();
+
+	module_head("map::size after time");
+	std::cout << "m3.size: " << m3.size() << std::endl;
 	module_foot();
 }
 
