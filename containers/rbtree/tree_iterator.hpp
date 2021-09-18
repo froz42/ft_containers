@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 22:24:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 15:47:13 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 15:50:26 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,12 +142,12 @@ namespace ft
 			node_ptr n = node;
 			node_ptr previous = NIL;
 
-			if (node->left != NIL)
-				return max(node->left);
-			previous = node->parent;
-			while (previous != NIL && node == previous->left)
+			if (n->left != NIL)
+				return max(n->left);
+			previous = n->parent;
+			while (previous != NIL && n == previous->left)
 			{
-				node = previous;
+				n = previous;
 				previous = previous->parent;
 			}
 			return previous;
@@ -163,7 +163,7 @@ namespace ft
 				return min(n->right);
 
 			next = n->parent;
-			while (next != NIL && node == next->right)
+			while (next != NIL && n == next->right)
 			{
 				n = next;
 				next = next->parent;
