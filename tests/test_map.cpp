@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 17:12:49 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 15:57:31 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 16:07:15 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,43 @@ static void test_constructor(void)
 	m5.clear();
 	std::cout << m5.size() << std::endl;
 	module_foot();
+}
 
+static void test_insert(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+	TESTED_NAMESPACE::pair<TESTED_NAMESPACE::map<std::string, int>::iterator, bool> r;
+	module_head("map::insert(value)");
+	r = m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test"), 1));
+	std::cout << "r.first.first: " << r.first->first << std::endl;
+	std::cout << "r.first.second: " << r.first->second << std::endl;
+	std::cout << "r.second: " << r.second << std::endl;
+	module_foot();
 
+	module_head("map::insert(value) duplicate");
+	r = m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test"), 2));
+	std::cout << "r.first.first: " << r.first->first << std::endl;
+	std::cout << "r.first.second: " << r.first->second << std::endl;
+	std::cout << "r.second: " << r.second << std::endl;
+	module_foot();
+
+	TESTED_NAMESPACE::map<std::string, int>::iterator it;
+
+	module_head("map::insert(iterator, value)");
+	it = m1.insert(m1.begin(), TESTED_NAMESPACE::make_pair(static_cast<std::string>("test2"), 6));
+	std::cout << "it.first.first: " << it->first << std::endl;
+	std::cout << "it.first.second: " << it->second << std::endl;
+	module_foot();
+
+	module_head("map::insert(iterator, value) duplicate");
+	it = m1.insert(m1.begin(), TESTED_NAMESPACE::make_pair(static_cast<std::string>("test2"), 7));
+	std::cout << "it.first.first: " << it->first << std::endl;
+	std::cout << "it.first.second: " << it->second << std::endl;
+	module_foot();
 }
 
 void test_map(void)
 {
 	test_constructor();
+	test_insert();
 }
