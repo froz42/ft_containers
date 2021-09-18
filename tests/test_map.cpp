@@ -6,18 +6,42 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 17:12:49 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/17 17:15:43 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 13:19:32 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test.hpp"
 
+static void test_constructor(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+	module_head("map::constructor(void)");
+	std::cout << "m1::size: " << m1.size() << std::endl;
+	std::cout << "m1::empty: " << m1.empty() << std::endl;
+	std::cout << "m1::clear: ";
+	m1.clear();
+	std::cout << m1.size() << std::endl;
+	module_foot();
+	TESTED_NAMESPACE::map<std::string, int> m2(m1);
+	module_head("map::constructor(map<std::string, int>) (empty)");
+	std::cout << "m2::size: " << m2.size() << std::endl;
+	std::cout << "m2::empty: " << m2.empty() << std::endl;
+	std::cout << "m2::clear: ";
+	m2.clear();
+	std::cout << m2.size() << std::endl;
+	module_foot();
+	m2.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test"), 1));
+	m2.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test2"), 6));
+	module_head("map::constructor(map<std::string, int>) (not empty)");
+	std::cout << "m2::size: " << m2.size() << std::endl;
+	std::cout << "m2::empty: " << m2.empty() << std::endl;
+	std::cout << "m2::clear: ";
+	m2.clear();
+	std::cout << m2.size() << std::endl;
+	module_foot();
+}
 
 void test_map(void)
 {
-	TESTED_NAMESPACE::map<std::string, int> m;
-
-	module_test("map::size", m.size());
-	module_test("map::empty", m.empty());
-	module_test("map::max_size", m.max_size());
+	test_constructor();
 }

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 00:06:05 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 13:24:53 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ namespace ft
 		_rb_node *right;
 		bool color;
 		T data;
+		_rb_node(T const &data) : data(data) {}
 	};
 
 	template <class T, class Compare, class Allocator = std::allocator<_rb_node<T> > >
@@ -279,7 +280,7 @@ namespace ft
 		node *_new_node(value_type const &data)
 		{
 			node *node = _allocator.allocate(1);
-			node->data = data;
+			_allocator.construct(node, data);
 			node->color = RED;
 			node->left = node->right = NIL;
 			node->parent = NIL;

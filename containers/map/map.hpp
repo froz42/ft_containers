@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 12:34:25 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/17 23:49:22 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 13:02:21 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,13 @@ namespace ft
 
 		template <class InputIt>
 		map(InputIt first, InputIt last, const Compare &comp = Compare(),
-			const Allocator &alloc = Allocator());
+			const Allocator &alloc = Allocator()) : _tree()
+		{
+			this->_allocator = alloc;
+			this->_key_comp = comp;
+			this->_value_comp = value_compare();
+			this->insert(first, last);
+		}
 
 		map(const map &other)
 		{
@@ -218,7 +224,7 @@ namespace ft
 		{
 			return (this->_tree.insert(hint, value));
 		}
-		
+
 		void erase(iterator pos)
 		{
 			this->_tree.erase(pos);
