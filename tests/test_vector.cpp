@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 13:23:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/15 22:45:19 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 13:26:46 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -569,6 +569,10 @@ void test_get_allocator()
 	alloc2.construct(p2, "42");
 	std::cout << *p1 << std::endl;
 	std::cout << *p2 << std::endl;
+	alloc1.destroy(p1);
+	alloc2.destroy(p2);
+	alloc1.deallocate(p1, 1);
+	alloc2.deallocate(p2, 1);
 	module_foot();
 }
 
