@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 22:24:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 00:06:43 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 14:41:15 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ namespace ft
 		tree_iterator(const tree_iterator &other)
 			: node(other.node), root(other.root), NIL(other.NIL) {}
 
-		~tree_iterator(void) {}
+		virtual ~tree_iterator(void) {}
 
 		//overload for const iterator
 		operator tree_iterator<node_ptr const>(void) const
@@ -138,12 +138,7 @@ namespace ft
 		{
 			node_ptr node = node;
 			node_ptr previous = NIL;
-
-			//       3 <--- start
-			//     /   \
-			//    1     5
-			//   / \
-			//  0   2 <-- target
+			
 			if (node->left != NIL)
 				return max(node->left);
 			previous = node->parent;

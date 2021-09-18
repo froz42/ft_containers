@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 13:24:53 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 14:27:27 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ namespace ft
 		typedef T value_type;
 		typedef size_t size_type;
 		typedef std::ptrdiff_t difference_type;
-		typedef ft::tree_iterator<_rb_tree<T, Compare, Allocator>::node > iterator;
-		typedef ft::tree_iterator<_rb_tree<T, Compare, Allocator>::node const> const_iterator;
+		typedef ft::tree_iterator<node> iterator;
+		typedef ft::tree_iterator<node const> const_iterator;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -614,11 +614,6 @@ namespace ft
 		{
 			node_ptr previous = NIL;
 
-			//       3 <--- start
-			//     /   \
-			//    1     5
-			//   / \
-			//  0   2 <-- target
 			if (node->left != NIL)
 				return max(node->left);
 			previous = node->parent;

@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/14 10:00:31 by tmatis            #+#    #+#              #
-#    Updated: 2021/09/17 17:16:45 by tmatis           ###   ########.fr        #
+#    Updated: 2021/09/18 14:28:39 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -118,12 +118,12 @@ bin_ft:
 ./bin_test:	${OBJS} ${OBJ_CHECKER}
 		@$(call run_and_test,$(CC) $(CFLAGS) -I$(INCLUDE_PATH) -o $@ ${OBJS} ${OBJ_CHECKER})
 	
-run: header clean bin_stl bin_ft ./bin_test
+run: header clean bin_ft bin_stl ./bin_test
 		@./bin_ft > ./stl.out
 		@./bin_stl > ./ft.out
 		@./bin_test
 
-runok: header clean bin_stl bin_ft ./bin_test
+runok: header clean bin_ft bin_stl ./bin_test
 		@./bin_stl > ./stl.out
 		@./bin_ft > ./ft.out
 		@./bin_test --show-ok
