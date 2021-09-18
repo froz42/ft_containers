@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 15:32:35 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 16:12:26 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,12 @@ namespace ft
 		// iterators
 		iterator begin()
 		{
-			return iterator(_min(), root, NIL);
+			return iterator(_minimum(root), root, NIL);
 		}
 
 		const_iterator begin() const
 		{
-			return const_iterator(_min(), root, NIL);
+			return const_iterator(_minimum(root), root, NIL);
 		}
 
 		iterator end()
@@ -125,12 +125,12 @@ namespace ft
 
 		reverse_iterator rend()
 		{
-			return reverse_iterator(_min(), root, NIL);
+			return reverse_iterator(_minimum(root), root, NIL);
 		}
 
 		const_reverse_iterator rend() const
 		{
-			return const_reverse_iterator(_min(), root, NIL);
+			return const_reverse_iterator(_minimum(root), root, NIL);
 		}
 
 		_rb_tree &operator=(_rb_tree const &other)
@@ -177,7 +177,7 @@ namespace ft
 				this->root = n;
 				while (this->root->parent != NIL)
 					this->root = this->root->parent;
-				return ft::make_pair(iterator(n, this->root, NIL), true); 
+				return ft::make_pair(iterator(n, this->root, NIL), true);
 			}
 			else
 			{
@@ -189,11 +189,11 @@ namespace ft
 
 		iterator insert(iterator hint, const value_type &value)
 		{
-			node_ptr next = _next(hint);
+			node_ptr next = _next(hint.node);
 
 			// check if hint is valid
-			
-			if (_compare((*hint).data, value) && _compare(value, next->data))
+
+			if (_compare(*hint, value) && _compare(value, next->data))
 			{
 				node_ptr n = _new_node(value);
 
@@ -286,22 +286,6 @@ namespace ft
 			node->left = node->right = NIL;
 			node->parent = NIL;
 			return node;
-		}
-
-		node_ptr _min()
-		{
-			node_ptr p = this->root;
-			while (p->left != NIL)
-				p = p->left;
-			return p;
-		}
-
-		node_ptr _max()
-		{
-			node_ptr p = this->root;
-			while (p->right != NIL)
-				p = p->right;
-			return p;
 		}
 
 		node_ptr _grand_parent(node_ptr const node) const
@@ -477,6 +461,14 @@ namespace ft
 				x = x->left;
 			return x;
 		}
+
+		node_ptr _maximum(node_ptr x)
+		{
+			while (x->right != NIL)
+				x = x->right;
+			return x;
+		}
+		
 		void _delete_node(node_ptr z)
 		{
 			node_ptr y = z;
@@ -616,7 +608,7 @@ namespace ft
 			node_ptr previous = NIL;
 
 			if (node->left != NIL)
-				return max(node->left);
+				return _minimum(node->left);
 			previous = node->parent;
 			while (previous != NIL && node == previous->left)
 			{
@@ -632,8 +624,8 @@ namespace ft
 			node_ptr next = NIL;
 
 			if (node->right != NIL)
-				return min(node->right);
-			
+				return _minimum(node->right);
+
 			next = node->parent;
 			while (next != NIL && node == next->right)
 			{
