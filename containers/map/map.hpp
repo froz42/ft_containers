@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 12:34:25 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 15:14:30 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 16:45:06 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ namespace ft
 			this->_key_comp = other._key_comp;
 			this->_value_comp = other._value_comp;
 			this->_tree = other._tree;
+			return *this;
 		}
 
 		allocator_type get_allocator() const

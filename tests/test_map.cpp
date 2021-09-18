@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 17:12:49 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 16:19:50 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 16:44:49 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,29 @@ static void test_insert(void)
 	module_foot();
 }
 
+static void test_assign_operator(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+	TESTED_NAMESPACE::map<std::string, int> m2;
+
+	module_head("map::= empty");
+	m1 = m2;
+	std::cout << "m1.size: " << m1.size() << std::endl;
+	std::cout << "m1.empty: " << m1.empty() << std::endl;
+	module_foot();
+	
+	module_head("map::=");
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test"), 1));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test2"), 1));
+	m2 = m1;
+	std::cout << "m2.size: " << m2.size() << std::endl;
+	std::cout << "m2.empty: " << m2.empty() << std::endl;
+	module_foot();
+}
+
 void test_map(void)
 {
 	test_constructor();
 	test_insert();
+	test_assign_operator();
 }

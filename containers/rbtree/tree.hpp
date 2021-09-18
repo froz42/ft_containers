@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 16:12:26 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/18 16:48:02 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ namespace ft
 			this->_allocator = allocator_;
 
 			this->NIL = _allocator.allocate(1);
+			_allocator.construct(this->NIL, value_type());
 			NIL->parent = NIL;
 			NIL->left = NIL;
 			NIL->right = NIL;
 			NIL->color = BLACK;
-
 			this->root = NIL;
 		}
 
@@ -89,6 +89,7 @@ namespace ft
 		~_rb_tree()
 		{
 			this->clear();
+			_allocator.destroy(this->NIL);
 			_allocator.deallocate(NIL, 1);
 		}
 
