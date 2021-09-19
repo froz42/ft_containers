@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 16:48:02 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 12:08:57 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,22 +116,26 @@ namespace ft
 
 		reverse_iterator rbegin()
 		{
-			return reverse_iterator(NIL, root, NIL);
+			iterator it = this->end();
+			return reverse_iterator(it);
 		}
 
 		const_reverse_iterator rbegin() const
 		{
-			return const_reverse_iterator(NIL, root, NIL);
+			const_iterator it = this->end();
+			return const_reverse_iterator(it);
 		}
 
 		reverse_iterator rend()
 		{
-			return reverse_iterator(_minimum(root), root, NIL);
+			iterator it = this->begin();
+			return reverse_iterator(it);
 		}
 
 		const_reverse_iterator rend() const
 		{
-			return const_reverse_iterator(_minimum(root), root, NIL);
+			const_iterator it = this->begin();
+			return const_reverse_iterator(it);
 		}
 
 		_rb_tree &operator=(_rb_tree const &other)

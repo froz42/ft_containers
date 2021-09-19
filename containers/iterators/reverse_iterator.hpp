@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 12:35:36 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/04 14:19:53 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 12:06:50 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ namespace ft
 			typedef Iter iterator_type;
 
 			//constructors
-			reverse_iterator() : _base(0) {};
+			reverse_iterator() : _base(Iter()) {};
 			explicit reverse_iterator (iterator_type it) : _base(it) {};
   			reverse_iterator (const reverse_iterator<Iter>& rev_it) : _base(rev_it._base) {};
 
@@ -116,12 +116,14 @@ namespace ft
 
 			reference operator*() const
 			{
-				return (*(_base - 1));
+				Iter tmp = _base;
+
+				return (*(--tmp));
 			}
 
 			pointer operator->() const
 			{
-				return (&(*(_base - 1)));
+				return &(operator*());
 			}
 
 			iterator_type base() const
