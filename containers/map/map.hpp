@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 12:34:25 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 16:45:06 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 12:27:30 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ namespace ft
 			iterator v =
 				_tree.find(ft::make_pair(key, mapped_type()));
 			if (v != _tree.end())
-				return (v->second);
+				return (v.node->data.second);
 			throw std::out_of_range("map::at");
 		}
 
@@ -125,7 +125,7 @@ namespace ft
 			const_iterator v =
 				_tree.find(ft::make_pair(key, mapped_type()));
 			if (v != _tree.end())
-				return (v->second);
+				return (v.node->data.second);
 			throw std::out_of_range("map::at");
 		}
 
@@ -134,12 +134,12 @@ namespace ft
 			iterator res = _tree.find(ft::make_pair(key, mapped_type()));
 
 			if (res != _tree.end())
-				return (res->second);
+				return (res.node->data.second);
 			else
 			{
 				ft::pair<iterator, bool> res2 = _tree.insert(
 					ft::make_pair(key, mapped_type()));
-				return (res2->first->second);
+				return (res2.first.node->data.second);
 			}
 		}
 

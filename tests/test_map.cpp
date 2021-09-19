@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 17:12:49 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 11:57:35 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 12:39:52 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,10 +219,125 @@ static void test_iterators(void)
 	module_foot();
 }
 
+static void test_capacity(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+
+	module_test("map::size (empty)", m1.size());
+	module_test("map::empty (empty)", m1.empty());
+	module_test("map::max_size (empty)", m1.max_size());
+
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test1"), 1));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test2"), 1));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test3"), 1));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test4"), 1));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test5"), 1));
+
+	module_test("map::size (not empty)", m1.size());
+	module_test("map::empty (not empty)", m1.empty());
+	module_test("map::max_size (not empty)", m1.max_size());
+}
+
+static void test_access_operator(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test1"), 1));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test2"), 2));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test3"), 3));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test4"), 4));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test5"), 5));
+
+	module_test("map::operator[]", m1["test1"]);
+	module_test("map::operator[]", m1["test2"]);
+	module_test("map::operator[]", m1["test3"]);
+	module_test("map::operator[]", m1["test4"]);
+	module_test("map::operator[]", m1["test5"]);
+	m1["test1"] = 6;
+	module_test("map::operator[]", m1["test1"]);
+	m1["test2"] = 7;
+	module_test("map::operator[]", m1["test2"]);
+	m1["test3"] = 8;
+	module_test("map::operator[]", m1["test3"]);
+	m1["test4"] = 9;
+	module_test("map::operator[]", m1["test4"]);
+	m1["test5"] = 10;
+	module_test("map::operator[]", m1["test5"]);
+
+	module_test("map::operator[] (not exist)", m1["test6"]);
+	m1["test7"] = 42;
+	module_test("map::operator[] (not exist)", m1["test7"]);
+
+	module_head("map::operator[] value check");
+	std::cout << string_map(m1) << std::endl;
+	std::cout << m1.size() << std::endl;
+	module_foot();
+}
+
+static void test_at(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+
+	module_head("map::at (not found)");
+	try
+	{
+		m1.at("test1");
+		std::cout << "KO" << std::endl;
+	}
+	catch (std::exception &)
+	{
+		std::cout << "OK" << std::endl;
+	}
+	module_foot();
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test1"), 1));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test2"), 2));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test3"), 3));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test4"), 4));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test5"), 5));
+	module_head("map::at (found)");
+	std::cout << m1.at("test1") << std::endl;
+	std::cout << m1.at("test2") << std::endl;
+	std::cout << m1.at("test3") << std::endl;
+	std::cout << m1.at("test4") << std::endl;
+	std::cout << m1.at("test5") << std::endl;
+	module_foot();
+
+	module_head("map::at (access)");
+	m1.at("test1") = 6;
+	m1.at("test2") = 7;
+	m1.at("test3") = 8;
+	m1.at("test4") = 9;
+	m1.at("test5") = 10;
+	std::cout << string_map(m1) << std::endl;
+	module_foot();
+}
+
+static void test_clear(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+
+	module_head("map::clear (empty)");
+	m1.clear();
+	std::cout << string_map(m1) << std::endl;
+	module_foot();
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test1"), 1));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test2"), 2));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test3"), 3));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test4"), 4));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test5"), 5));
+	module_head("map::clear (not empty)");
+	m1.clear();
+	std::cout << string_map(m1) << std::endl;
+	module_foot();
+}
+
 void test_map(void)
 {
 	test_constructor();
 	test_insert();
 	test_assign_operator();
 	test_iterators();
+	test_capacity();
+	test_access_operator();
+	test_at();
+	test_clear();
 }
