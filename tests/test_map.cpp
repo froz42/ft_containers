@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 17:12:49 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 13:52:31 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 15:47:08 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -617,6 +617,32 @@ static void test_relational_operators(void)
 	module_foot();
 }
 
+static void test_swap_non_member(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		m1.insert(TESTED_NAMESPACE::make_pair(ss.str(), i));
+	}
+	TESTED_NAMESPACE::map<std::string, int> m2;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "gest" << i;
+		m2.insert(TESTED_NAMESPACE::make_pair(ss.str(), i));
+	}
+
+	module_head("map::swap");
+	m1.swap(m2);
+	std::cout << m1.size() << std::endl;
+	std::cout << m2.size() << std::endl;
+	std::cout << string_map(m1) << std::endl;
+	std::cout << string_map(m2) << std::endl;
+	module_foot();
+}
+
 void test_map(void)
 {
 	test_constructor();
@@ -638,4 +664,5 @@ void test_map(void)
 	test_upper_bound();
 	test_equal_range();
 	test_relational_operators();
+	test_swap_non_member();
 }
