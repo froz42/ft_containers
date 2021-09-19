@@ -1,16 +1,26 @@
 # ft_containers
 
- # vector
+## Mandatory
+
+ ### vector
 
  - [x] done
  - [x] tested
 
-# stack
+### stack
 
  - [x] done
  - [x] tested
 
-# map
+### map
 
  - [x] done
  - [x] tested
+
+
+## Bonus
+
+### set
+
+ - [ ] done
+ - [ ] tested
