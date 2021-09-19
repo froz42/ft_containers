@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/14 10:00:31 by tmatis            #+#    #+#              #
-#    Updated: 2021/09/19 17:17:17 by tmatis           ###   ########.fr        #
+#    Updated: 2021/09/19 17:38:56 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,8 @@ SRCS_CHECKER	= checker/main.cpp
 SRCS_TESTS 		= tests/main.cpp tests/test_iterator.cpp tests/test_sfinae.cpp \
 					 tests/test_pair.cpp tests/test_vector.cpp \
 					 tests/test_stack.cpp tests/test_btree.cpp \
-					 tests/test_map.cpp tests/test_set.cpp
+					 tests/test_map.cpp tests/test_set.cpp \
+					 tests/test_42.cpp
 
 ################################################################################
 #                                 Makefile logic                               #
