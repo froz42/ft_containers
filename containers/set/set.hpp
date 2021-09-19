@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/19 14:04:49 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 15:48:12 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 15:57:09 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,27 @@ namespace ft
 
 		// Constructors & destructor //
 		explicit set(const key_compare &comp = key_compare(),
-					 const allocator_type &alloc = allocator_type());
+					 const allocator_type &alloc = allocator_type()): _tree()
+		{
+			_comp = comp;
+			_alloc = alloc;
+		}
 
 		template <class InputIterator>
 		set(InputIterator first, InputIterator last,
 			const key_compare &comp = key_compare(),
-			const allocator_type &alloc = allocator_type());
+			const allocator_type &alloc = allocator_type()) : _tree()
+		{
+			_comp = comp;
+			_alloc = alloc;
+			insert(first, last);
+		}
 
-		set(const set &s);
+		set(const set &other)
+		{
+			_comp = other._comp;
+			_alloc = other._alloc;
+		}
 
 		~set(void);
 
