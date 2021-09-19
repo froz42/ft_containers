@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/19 16:14:09 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 16:53:16 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 17:12:12 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,6 +310,245 @@ static void test_erase(void)
 	module_test("set::erase time content", string_set(s2));
 }
 
+static void test_swap(void)
+{
+	TESTED_NAMESPACE::set<std::string> s1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		s1.insert(ss.str());
+	}
+	TESTED_NAMESPACE::set<std::string> s2;
+	for (int i = 0; i < 50; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		s2.insert(ss.str());
+	}
+	module_head("set::swap()");
+	s1.swap(s2);
+	std::cout << "s1 content:" << string_set(s1) << std::endl;
+	std::cout << "s2 content:" << string_set(s2) << std::endl;
+	std::cout << "size: " << s1.size() << std::endl;
+	std::cout << "size: " << s2.size() << std::endl;
+	module_foot();
+}
+
+static void test_count(void)
+{
+	TESTED_NAMESPACE::set<std::string> s1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		s1.insert(ss.str());
+	}
+
+	module_head("set::count()");
+	std::cout << s1.count(std::string("test1")) << std::endl;
+	std::cout << s1.count(std::string("test2")) << std::endl;
+	std::cout << s1.count(std::string("test3")) << std::endl;
+	std::cout << s1.count(std::string("test4")) << std::endl;
+	std::cout << s1.count(std::string("test5")) << std::endl;
+	std::cout << s1.count(std::string("does not exist")) << std::endl;
+	module_foot();
+}
+
+static void test_find(void)
+{
+	TESTED_NAMESPACE::set<std::string> s1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		s1.insert(ss.str());
+	}
+
+	module_head("set::find()");
+	std::cout << *s1.find(std::string("test1")) << std::endl;
+	std::cout << *s1.find(std::string("test2")) << std::endl;
+	std::cout << *s1.find(std::string("test3")) << std::endl;
+	std::cout << *s1.find(std::string("test4")) << std::endl;
+	std::cout << (s1.find(std::string("not exist")) == s1.end()) << std::endl;
+	module_foot();
+}
+
+static void test_key_comp(void)
+{
+	TESTED_NAMESPACE::set<std::string> s1;
+	TESTED_NAMESPACE::set<std::string>::key_compare comp = s1.key_comp();
+
+	module_head("set::key_comp()");
+	std::cout << comp(std::string("test1"), std::string("test1")) << std::endl;
+	std::cout << comp(std::string("test1"), std::string("test2")) << std::endl;
+	module_foot();
+}
+
+static void test_value_comp(void)
+{
+	TESTED_NAMESPACE::set<std::string> s1;
+	TESTED_NAMESPACE::set<std::string>::value_compare comp = s1.value_comp();
+
+	module_head("set::value_comp()");
+	std::cout << comp(std::string("test1"), std::string("test1")) << std::endl;
+	std::cout << comp(std::string("test1"), std::string("test2")) << std::endl;
+	module_foot();
+}
+
+static void test_get_allocator(void)
+{
+	TESTED_NAMESPACE::set<std::string> s1;
+
+	module_head("set::get_allocator()");
+	TESTED_NAMESPACE::set<std::string>::allocator_type alloc = s1.get_allocator();
+	std::cout << alloc.max_size() << std::endl;
+	module_foot();
+}
+
+static void test_lower_bound(void)
+{
+	TESTED_NAMESPACE::set<std::string> s1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		s1.insert(ss.str());
+	}
+	module_head("set::lower_bound()");
+	std::cout << *s1.lower_bound(std::string("test1")) << std::endl;
+	std::cout << *s1.lower_bound(std::string("test2")) << std::endl;
+	std::cout << *s1.lower_bound(std::string("test3")) << std::endl;
+	std::cout << *s1.lower_bound(std::string("test4")) << std::endl;
+	std::cout << *s1.lower_bound(std::string("test5")) << std::endl;
+	std::cout << *s1.lower_bound(std::string("does not exist")) << std::endl;
+	module_foot();
+}
+
+static void test_upper_bound(void)
+{
+	TESTED_NAMESPACE::set<std::string> s1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		s1.insert(ss.str());
+	}
+	module_head("set::upper_bound()");
+	std::cout << *s1.upper_bound(std::string("test1")) << std::endl;
+	std::cout << *s1.upper_bound(std::string("test2")) << std::endl;
+	std::cout << *s1.upper_bound(std::string("test3")) << std::endl;
+	std::cout << *s1.upper_bound(std::string("test4")) << std::endl;
+	std::cout << *s1.upper_bound(std::string("test5")) << std::endl;
+	std::cout << *s1.upper_bound(std::string("does not exist")) << std::endl;
+	module_foot();
+}
+
+static void test_equal_range(void)
+{
+	TESTED_NAMESPACE::set<std::string> s1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		s1.insert(ss.str());
+	}
+	module_head("set::equal_range()");
+	std::cout << *(s1.equal_range(std::string("test1")).first) << std::endl;
+	std::cout << *(s1.equal_range(std::string("test1")).second) << std::endl;
+	std::cout << *(s1.equal_range(std::string("test2")).first) << std::endl;
+	std::cout << *(s1.equal_range(std::string("test2")).second) << std::endl;
+	std::cout << *(s1.equal_range(std::string("test3")).first) << std::endl;
+	std::cout << *(s1.equal_range(std::string("test3")).second) << std::endl;
+	std::cout << *(s1.equal_range(std::string("test4")).first) << std::endl;
+	std::cout << *(s1.equal_range(std::string("test4")).second) << std::endl;
+	std::cout << *(s1.equal_range(std::string("test5")).first) << std::endl;
+	std::cout << *(s1.equal_range(std::string("test5")).second) << std::endl;
+	std::cout << *(s1.equal_range(std::string("does not exist")).first) << std::endl;
+	std::cout << *(s1.equal_range(std::string("does not exist")).second) << std::endl;
+	module_foot();
+}
+
+static void test_relational_operators(void)
+{
+	TESTED_NAMESPACE::set<std::string> s1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		s1.insert(ss.str());
+	}
+	TESTED_NAMESPACE::set<std::string> s2;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "gest" << i;
+		s2.insert(ss.str());
+	}
+
+	module_head("set::operator==()");
+	std::cout << (s1 == s2) << std::endl;
+	std::cout << (s2 == s1) << std::endl;
+	std::cout << (s1 == s1) << std::endl;
+	module_foot();
+
+	module_head("set::operator!=()");
+	std::cout << (s1 != s2) << std::endl;
+	std::cout << (s2 != s1) << std::endl;
+	std::cout << (s1 == s1) << std::endl;
+	module_foot();
+
+	module_head("set::operator<()");
+	std::cout << (s1 < s2) << std::endl;
+	std::cout << (s2 < s1) << std::endl;
+	std::cout << (s1 < s1) << std::endl;
+	module_foot();
+
+	module_head("set::operator<=()");
+	std::cout << (s1 <= s2) << std::endl;
+	std::cout << (s2 <= s1) << std::endl;
+	std::cout << (s1 <= s1) << std::endl;
+	module_foot();
+
+	module_head("set::operator>()");
+	std::cout << (s1 > s2) << std::endl;
+	std::cout << (s2 > s1) << std::endl;
+	std::cout << (s1 > s1) << std::endl;
+	module_foot();
+
+	module_head("set::operator>=()");
+	std::cout << (s1 >= s2) << std::endl;
+	std::cout << (s2 >= s1) << std::endl;
+	std::cout << (s1 >= s1) << std::endl;
+	module_foot();
+}
+
+static void test_swap_non_member(void)
+{
+	TESTED_NAMESPACE::set<std::string> s1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		s1.insert(ss.str());
+	}
+	TESTED_NAMESPACE::set<std::string> s2;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "gest" << i;
+		s2.insert(ss.str());
+	}
+
+	module_head("set::swap() (non member)");
+	s1.swap(s2);
+	std::cout << s1.size() << std::endl;
+	std::cout << s2.size() << std::endl;
+	std::cout << string_set(s1) << std::endl;
+	std::cout << string_set(s2) << std::endl;
+	module_foot();
+}
+
 void test_set(void)
 {
 	test_constructor();
@@ -319,4 +558,15 @@ void test_set(void)
 	test_capacity();
 	test_clear();
 	test_erase();
+	test_swap();
+	test_count();
+	test_find();
+	test_key_comp();
+	test_value_comp();
+	test_get_allocator();
+	test_lower_bound();
+	test_upper_bound();
+	test_equal_range();
+	test_relational_operators();
+	test_swap_non_member();
 }

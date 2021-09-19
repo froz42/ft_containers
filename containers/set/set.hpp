@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/19 14:04:49 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 16:10:50 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 17:11:49 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,13 +230,19 @@ namespace ft
 
 		ft::pair<iterator, iterator> equal_range(const Key &key)
 		{
-			return _tree.equal_range(key);
+			iterator lower = _tree.lower_bound(key);
+			iterator upper = _tree.upper_bound(key);
+
+			return ft::make_pair(lower, upper);
 		}
 
 		ft::pair<const_iterator, const_iterator>
 		equal_range(const Key &key) const
 		{
-			return _tree.equal_range(key);
+			const_iterator lower = _tree.lower_bound(key);
+			const_iterator upper = _tree.upper_bound(key);
+
+			return ft::make_pair(lower, upper);
 		}
 
 		// Observers //
