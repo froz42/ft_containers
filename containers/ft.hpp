@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 16:35:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/17 17:12:26 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 16:13:37 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,5 @@
 # include "stack/stack.hpp"
 # include "rbtree/tree.hpp"
 # include "map/map.hpp"
+# include "set/set.hpp"
 #endif

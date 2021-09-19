@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 13:17:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 14:02:21 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 16:17:25 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <vector>
 #include <stack>
 #include <map>
+#include <set>
 
 #ifndef TESTED_NAMESPACE
 # define TESTED_NAMESPACE std
@@ -44,5 +45,6 @@ void test_pair(void);
 void test_stack(void);
 void test_btree(void);
 void test_map(void);
+void test_set(void);
 
 #endif
