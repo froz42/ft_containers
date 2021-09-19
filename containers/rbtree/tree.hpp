@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 12:08:57 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 13:53:52 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,6 +246,57 @@ namespace ft
 			return _allocator.max_size();
 		}
 
+		void swap(_rb_tree &other)
+		{
+			std::swap(this->_allocator, other._allocator);
+			std::swap(this->_compare, other._compare);
+			std::swap(this->_size, other._size);
+			std::swap(this->NIL, other.NIL);
+			std::swap(this->root, other.root);
+		}
+
+		iterator lower_bound(const value_type &value)
+		{
+			for (iterator it = this->begin(); it != this->end(); ++it)
+			{
+				if (_compare(value, it.node->data)
+					|| _compare(it.node->data, value) == 0)
+					return it;
+			}
+			return this->end();
+		}
+
+		const_iterator lower_bound(const value_type &value) const
+		{
+			for (iterator it = this->begin(); it != this->end(); ++it)
+			{
+				if (_compare(value, it.node->data)
+					|| _compare(it.node->data, value) == 0)
+					return it;
+			}
+			return this->end();
+		}
+
+		iterator upper_bound(const value_type &value)
+		{
+			for (iterator it = this->begin(); it != this->end(); ++it)
+			{
+				if (_compare(value, it.node->data))
+					return it;
+			}
+			return this->end();
+		}
+
+		const_iterator upper_bound(const value_type &value) const
+		{
+			for (iterator it = this->begin(); it != this->end(); ++it)
+			{
+				if (_compare(value, it.node->data))
+					return it;
+			}
+			return this->end();
+		}
+
 		void print(node *p = NULL, int indent = 0) const
 		{
 			if (p == NULL)
@@ -460,20 +511,20 @@ namespace ft
 			v->parent = u->parent;
 		}
 
-		node_ptr _minimum(node_ptr x)
+		node_ptr _minimum(node_ptr x) const
 		{
 			while (x->left != NIL)
 				x = x->left;
 			return x;
 		}
 
-		node_ptr _maximum(node_ptr x)
+		node_ptr _maximum(node_ptr x) const
 		{
 			while (x->right != NIL)
 				x = x->right;
 			return x;
 		}
-		
+
 		void _delete_node(node_ptr z)
 		{
 			node_ptr y = z;
@@ -608,7 +659,7 @@ namespace ft
 			}
 		}
 
-		node_ptr _prev(node_ptr node)
+		node_ptr _prev(node_ptr node) const
 		{
 			node_ptr previous = NIL;
 
@@ -624,7 +675,7 @@ namespace ft
 		}
 
 		//find the next node in the tree
-		node_ptr _next(node_ptr node)
+		node_ptr _next(node_ptr node) const
 		{
 			node_ptr next = NIL;
 

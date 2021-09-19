@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 17:12:49 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 12:53:40 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 13:52:31 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ static void test_iterators(void)
 	for (rit = m1.rbegin(); rit != m1.rend(); ++rit)
 	{
 		std::cout << "rit.first.first: " << rit->first << std::endl;
-		std::cout << "rit.first.second: " << rit->second << std::endl;	
+		std::cout << "rit.first.second: " << rit->second << std::endl;
 	}
 	module_foot();
 }
@@ -401,6 +401,222 @@ static void test_erase(void)
 	module_foot();
 }
 
+static void test_swap(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		m1.insert(TESTED_NAMESPACE::make_pair(ss.str(), i));
+	}
+	TESTED_NAMESPACE::map<std::string, int> m2;
+	for (int i = 0; i < 50; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		m2.insert(TESTED_NAMESPACE::make_pair(ss.str(), i));
+	}
+
+	module_head("map::swap");
+	m1.swap(m2);
+	std::cout << string_map(m1) << std::endl;
+	std::cout << string_map(m2) << std::endl;
+	std::cout << "size: " << m1.size() << std::endl;
+	std::cout << "size: " << m2.size() << std::endl;
+	module_foot();
+}
+
+static void test_count(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		m1.insert(TESTED_NAMESPACE::make_pair(ss.str(), i));
+	}
+
+	module_head("map::count");
+	std::cout << m1.count("test1") << std::endl;
+	std::cout << m1.count("test2") << std::endl;
+	std::cout << m1.count("test3") << std::endl;
+	std::cout << m1.count("test4") << std::endl;
+	std::cout << m1.count("test5") << std::endl;
+	std::cout << m1.count("does not exist") << std::endl;
+	module_foot();
+}
+
+static void test_find(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		m1.insert(TESTED_NAMESPACE::make_pair(ss.str(), i));
+	}
+
+	module_head("map::find");
+	std::cout << m1.find("test1")->second << std::endl;
+	std::cout << m1.find("test2")->second << std::endl;
+	std::cout << m1.find("test3")->second << std::endl;
+	std::cout << m1.find("test4")->second << std::endl;
+	std::cout << (m1.find("nothing") == m1.end()) << std::endl;
+	module_foot();
+}
+
+static void test_key_comp(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+
+	TESTED_NAMESPACE::map<std::string, int>::key_compare comp = m1.key_comp();
+	module_head("map::key_compare");
+	std::cout << comp("test1", "test1") << std::endl;
+	std::cout << comp("test1", "test2") << std::endl;
+	module_foot();
+}
+
+static void test_value_comp(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+
+	TESTED_NAMESPACE::map<std::string, int>::value_compare comp = m1.value_comp();
+	module_head("map::value_compare");
+	TESTED_NAMESPACE::pair<std::string, int> p1(std::string("test1"), 1);
+	TESTED_NAMESPACE::pair<std::string, int> p2(std::string("test2"), 2);
+	std::cout << comp(p1, p2) << std::endl;
+	module_foot();
+}
+
+static void test_get_allocator(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+
+	module_head("map::get_allocator");
+	TESTED_NAMESPACE::map<std::string, int>::allocator_type alloc = m1.get_allocator();
+
+	std::cout << "allocator: " << alloc.max_size() << std::endl;
+	module_foot();
+}
+
+static void test_lower_bound(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		m1.insert(TESTED_NAMESPACE::make_pair(ss.str(), i));
+	}
+
+	module_head("map::lower_bound");
+	std::cout << m1.lower_bound("test1")->second << std::endl;
+	std::cout << m1.lower_bound("test2")->second << std::endl;
+	std::cout << m1.lower_bound("test3")->second << std::endl;
+	std::cout << m1.lower_bound("test4")->second << std::endl;
+	std::cout << m1.lower_bound("test5")->second << std::endl;
+	std::cout << m1.lower_bound("does not exist")->second << std::endl;
+	module_foot();
+}
+
+static void test_upper_bound(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		m1.insert(TESTED_NAMESPACE::make_pair(ss.str(), i));
+	}
+
+	module_head("map::upper_bound");
+	std::cout << m1.upper_bound("test1")->second << std::endl;
+	std::cout << m1.upper_bound("test2")->second << std::endl;
+	std::cout << m1.upper_bound("test3")->second << std::endl;
+	std::cout << m1.upper_bound("test4")->second << std::endl;
+	std::cout << m1.upper_bound("test5")->second << std::endl;
+	std::cout << m1.upper_bound("does not exist")->second << std::endl;
+	module_foot();
+}
+
+static void test_equal_range(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		m1.insert(TESTED_NAMESPACE::make_pair(ss.str(), i));
+	}
+
+	module_head("map::equal_range");
+	std::cout << m1.equal_range("test1").first->first << std::endl;
+	std::cout << m1.equal_range("test1").second->first << std::endl;
+	std::cout << m1.equal_range("test2").first->first << std::endl;
+	std::cout << m1.equal_range("test2").second->first << std::endl;
+	std::cout << m1.equal_range("test3").first->first << std::endl;
+	std::cout << m1.equal_range("test3").second->first << std::endl;
+	std::cout << m1.equal_range("test4").first->first << std::endl;
+	std::cout << m1.equal_range("test4").second->first << std::endl;
+	std::cout << m1.equal_range("test5").first->first << std::endl;
+	std::cout << m1.equal_range("test5").second->first << std::endl;
+	std::cout << m1.equal_range("does not exist").first->first << std::endl;
+	module_foot();
+}
+
+static void test_relational_operators(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		m1.insert(TESTED_NAMESPACE::make_pair(ss.str(), i));
+	}
+	TESTED_NAMESPACE::map<std::string, int> m2;
+	for (int i = 0; i < 30; ++i)
+	{
+		std::ostringstream ss;
+		ss << "gest" << i;
+		m2.insert(TESTED_NAMESPACE::make_pair(ss.str(), i));
+	}
+
+	module_head("map::operator==");
+	std::cout << (m1 == m2) << std::endl;
+	std::cout << (m1 == m1) << std::endl;
+	module_foot();
+
+	module_head("map::operator!=");
+	std::cout << (m1 != m2) << std::endl;
+	std::cout << (m1 != m1) << std::endl;
+	module_foot();
+
+	module_head("map::operator<");
+	std::cout << (m1 < m2) << std::endl;
+	std::cout << (m2 < m1) << std::endl;
+	std::cout << (m1 < m1) << std::endl;
+	module_foot();
+
+	module_head("map::operator<=");
+	std::cout << (m1 <= m2) << std::endl;
+	std::cout << (m2 <= m1) << std::endl;
+	std::cout << (m1 <= m1) << std::endl;
+	module_foot();
+
+	module_head("map::operator>");
+	std::cout << (m1 > m2) << std::endl;
+	std::cout << (m2 > m1) << std::endl;
+	std::cout << (m1 > m1) << std::endl;
+	module_foot();
+
+	module_head("map::operator>=");
+	std::cout << (m1 >= m2) << std::endl;
+	std::cout << (m2 >= m1) << std::endl;
+	std::cout << (m1 >= m1) << std::endl;
+	module_foot();
+}
+
 void test_map(void)
 {
 	test_constructor();
@@ -412,4 +628,14 @@ void test_map(void)
 	test_at();
 	test_clear();
 	test_erase();
+	test_swap();
+	test_count();
+	test_find();
+	test_key_comp();
+	test_value_comp();
+	test_get_allocator();
+	test_lower_bound();
+	test_upper_bound();
+	test_equal_range();
+	test_relational_operators();
 }
