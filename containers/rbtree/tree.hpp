@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 15:55:49 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 16:00:43 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,12 @@ namespace ft
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 		// constructors
-		_rb_tree(allocator allocator_ = allocator()) : _compare(compare()), _size(0)
+		_rb_tree(allocator alloc = allocator()) : _compare(compare()), _size(0)
 		{
-			_allocator = allocator_;
+			_alloc = alloc;
 
-			NIL = _allocator.allocate(1);
-			_allocator.construct(NIL, value_type());
+			NIL = _alloc.allocate(1);
+			_alloc.construct(NIL, value_type());
 			NIL->parent = NIL;
 			NIL->left = NIL;
 			NIL->right = NIL;
@@ -72,10 +72,10 @@ namespace ft
 
 		_rb_tree(_rb_tree const &other)
 		{
-			_allocator = other._allocator;
+			_alloc = other._alloc;
 			_compare = other._compare;
 			_size = other._size;
-			NIL = _allocator.allocate(1);
+			NIL = _alloc.allocate(1);
 			NIL->parent = NIL;
 			NIL->left = NIL;
 			NIL->right = NIL;
@@ -89,8 +89,8 @@ namespace ft
 		~_rb_tree()
 		{
 			clear();
-			_allocator.destroy(NIL);
-			_allocator.deallocate(NIL, 1);
+			_alloc.destroy(NIL);
+			_alloc.deallocate(NIL, 1);
 		}
 
 		// iterators
@@ -186,8 +186,8 @@ namespace ft
 			}
 			else
 			{
-				_allocator.destroy(n);
-				_allocator.deallocate(n, 1);
+				_alloc.destroy(n);
+				_alloc.deallocate(n, 1);
 				return ft::make_pair(iterator(r.first, root, NIL), false);
 			}
 		}
@@ -243,12 +243,12 @@ namespace ft
 
 		size_type max_size() const
 		{
-			return _allocator.max_size();
+			return _alloc.max_size();
 		}
 
 		void swap(_rb_tree &other)
 		{
-			std::swap(_allocator, other._allocator);
+			std::swap(_alloc, other._alloc);
 			std::swap(_compare, other._compare);
 			std::swap(_size, other._size);
 			std::swap(NIL, other.NIL);
@@ -330,14 +330,14 @@ namespace ft
 		node_ptr root;
 		node_ptr NIL;		  //sentinel
 		compare _compare;	  // used to compare nodes
-		allocator _allocator; // used to allocate nodes
+		allocator _alloc; // used to allocate nodes
 		size_type _size;	  // number of nodes in the tree (to have O(1) size())
 
 		// new node
 		node *_new_node(value_type const &data)
 		{
-			node *node = _allocator.allocate(1);
-			_allocator.construct(node, data);
+			node *node = _alloc.allocate(1);
+			_alloc.construct(node, data);
 			node->color = RED;
 			node->left = node->right = NIL;
 			node->parent = NIL;
@@ -558,8 +558,8 @@ namespace ft
 				y->left->parent = y;
 				y->color = z->color;
 			}
-			_allocator.destroy(z);
-			_allocator.deallocate(z, 1);
+			_alloc.destroy(z);
+			_alloc.deallocate(z, 1);
 			_size--;
 			if (y_original_color == BLACK)
 				_delete_fixup(x);
@@ -644,8 +644,8 @@ namespace ft
 			{
 				_recursive_clear(x->left);
 				_recursive_clear(x->right);
-				_allocator.destroy(x);
-				_allocator.deallocate(x, 1);
+				_alloc.destroy(x);
+				_alloc.deallocate(x, 1);
 			}
 		}
 

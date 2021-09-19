@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 12:34:25 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 15:55:22 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 16:08:00 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ namespace ft
 					 const allocator_type &alloc = allocator_type())
 			: _tree()
 		{
-			_allocator = alloc;
+			_alloc = alloc;
 			_key_comp = comp;
 			_value_comp = value_compare();
 		}
@@ -81,7 +81,7 @@ namespace ft
 		map(InputIt first, InputIt last, const Compare &comp = Compare(),
 			const Allocator &alloc = Allocator()) : _tree()
 		{
-			_allocator = alloc;
+			_alloc = alloc;
 			_key_comp = comp;
 			_value_comp = value_compare();
 			insert(first, last);
@@ -89,7 +89,7 @@ namespace ft
 
 		map(const map &other)
 		{
-			_allocator = other._allocator;
+			_alloc = other._alloc;
 			_key_comp = other._key_comp;
 			_value_comp = other._value_comp;
 			_tree = other._tree;
@@ -99,16 +99,16 @@ namespace ft
 
 		map &operator=(const map &other)
 		{
-			_allocator = other._allocator;
+			_alloc = other._alloc;
 			_key_comp = other._key_comp;
 			_value_comp = other._value_comp;
 			_tree = other._tree;
 			return *this;
 		}
 
-		allocator_type get_allocator() const
+		allocator_type get_alloc() const
 		{
-			return (_allocator);
+			return (_alloc);
 		}
 
 		// element access //
@@ -246,7 +246,7 @@ namespace ft
 
 		void swap(map &other)
 		{
-			std::swap(_allocator, other._allocator);
+			std::swap(_alloc, other._alloc);
 			std::swap(_key_comp, other._key_comp);
 			std::swap(_value_comp, other._value_comp);
 			_tree.swap(other._tree);
@@ -258,10 +258,7 @@ namespace ft
 		{
 			iterator res = _tree.find(ft::make_pair(key, mapped_type()));
 
-			if (res != _tree.end())
-				return (1);
-			else
-				return (0);
+			return (res == _tree.end()) ? 0 : 1;
 		}
 
 		iterator find(const key_type &key)
@@ -301,7 +298,8 @@ namespace ft
 			return (ft::make_pair(lower, upper));
 		}
 
-		ft::pair<const_iterator, const_iterator> equal_range(const Key &key) const
+		ft::pair<const_iterator, const_iterator>
+			equal_range(const Key &key) const
 		{
 			const_iterator lower = lower_bound(key);
 			const_iterator upper = upper_bound(key);
@@ -322,7 +320,7 @@ namespace ft
 
 	private:
 		_rb_tree<value_type, value_compare> _tree;
-		allocator_type _allocator;
+		allocator_type _alloc;
 		key_compare _key_comp;
 		value_compare _value_comp;
 	};

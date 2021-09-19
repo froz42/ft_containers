@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/19 14:04:49 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 15:57:09 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 16:10:50 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ namespace ft
 
 		// Constructors & destructor //
 		explicit set(const key_compare &comp = key_compare(),
-					 const allocator_type &alloc = allocator_type()): _tree()
+					 const allocator_type &alloc = allocator_type()) : _tree()
 		{
 			_comp = comp;
 			_alloc = alloc;
@@ -57,94 +57,199 @@ namespace ft
 			const key_compare &comp = key_compare(),
 			const allocator_type &alloc = allocator_type()) : _tree()
 		{
-			_comp = comp;
 			_alloc = alloc;
+			_comp = comp;
 			insert(first, last);
 		}
 
 		set(const set &other)
 		{
-			_comp = other._comp;
 			_alloc = other._alloc;
+			_comp = other._comp;
 		}
 
-		~set(void);
+		~set(void){};
 
-		set &operator=(const set &s);
+		set &operator=(const set &other)
+		{
+			_alloc = other._alloc;
+			_comp = other._comp;
+			_tree = other._tree;
+			return *this;
+		}
 
-		allocator_type get_allocator(void) const;
+		allocator_type get_allocator(void) const
+		{
+			return _alloc;
+		}
 
 		// iterators //
 
-		iterator begin(void);
+		iterator begin(void)
+		{
+			return _tree.begin();
+		}
 
-		const_iterator begin(void) const;
+		const_iterator begin(void) const
+		{
+			return _tree.begin();
+		}
 
-		iterator end(void);
+		iterator end(void)
+		{
+			return _tree.end();
+		}
 
-		const_iterator end(void) const;
+		const_iterator end(void) const
+		{
+			return _tree.end();
+		}
 
-		reverse_iterator rbegin(void);
+		reverse_iterator rbegin(void)
+		{
+			return _tree.rbegin();
+		}
 
-		const_reverse_iterator rbegin(void) const;
+		const_reverse_iterator rbegin(void) const
+		{
+			return _tree.rbegin();
+		}
 
-		reverse_iterator rend(void);
+		reverse_iterator rend(void)
+		{
+			return _tree.rend();
+		}
 
-		const_reverse_iterator rend(void) const;
+		const_reverse_iterator rend(void) const
+		{
+			return _tree.rend();
+		}
 
 		// capacity //
 
-		size_type size(void) const;
+		size_type size(void) const
+		{
+			return _tree.size();
+		}
 
-		size_type max_size(void) const;
+		size_type max_size(void) const
+		{
+			return _tree.max_size();
+		}
 
-		bool empty(void) const;
+		bool empty(void) const
+		{
+			return (_tree.size() == 0);
+		}
 
 		// modifiers //
 
-		void clear(void);
+		void clear(void)
+		{
+			_tree.clear();
+		}
 
-		ft::pair<iterator, bool> insert(const value_type &value);
+		ft::pair<iterator, bool> insert(const value_type &value)
+		{
+			return _tree.insert(value);
+		}
 
-		iterator insert(iterator hint, const value_type &value);
+		iterator insert(iterator hint, const value_type &value)
+		{
+			return _tree.insert(hint, value);
+		}
 
 		template <class InputIt>
-		void insert(InputIt first, InputIt last);
+		void insert(InputIt first, InputIt last)
+		{
+			for (; first != last; ++first)
+				_tree.insert(*first);
+		}
 
-		void erase(iterator pos);
+		void erase(iterator pos)
+		{
+			_tree.erase(pos);
+		}
 
-		void erase(iterator first, iterator last);
+		void erase(iterator first, iterator last)
+		{
+			while (first != last)
+				_tree.erase(first++);
+		}
 
-		size_type erase(const key_type &key);
+		size_type erase(const key_type &key)
+		{
+			return _tree.erase(key);
+		}
 
-		void swap(set &s);
+		void swap(set &other)
+		{
+			std::swap(_alloc, other._alloc);
+			std::swap(_comp, other._comp);
+			_tree.swap(other._tree);
+		}
 
 		// lookup //
 
-		size_type count(const key_type &key) const;
+		size_type count(const key_type &key) const
+		{
+			iterator res = _tree.find(key);
 
-		iterator find(const Key &key);
+			return (res == _tree.end()) ? 0 : 1;
+		}
 
-		const_iterator find(const Key &key) const;
+		iterator find(const Key &key)
+		{
+			return _tree.find(key);
+		}
 
-		iterator lower_bound(const Key &key);
+		const_iterator find(const Key &key) const
+		{
+			return _tree.find(key);
+		}
 
-		const_iterator lower_bound(const Key &key) const;
+		iterator lower_bound(const Key &key)
+		{
+			return _tree.lower_bound(key);
+		}
 
-		iterator upper_bound(const Key &key);
+		const_iterator lower_bound(const Key &key) const
+		{
+			return _tree.lower_bound(key);
+		}
 
-		const_iterator upper_bound(const Key &key) const;
+		iterator upper_bound(const Key &key)
+		{
+			return _tree.upper_bound(key);
+		}
 
-		ft::pair<iterator, iterator> equal_range(const Key &key);
+		const_iterator upper_bound(const Key &key) const
+		{
+			return _tree.upper_bound(key);
+		}
+
+		ft::pair<iterator, iterator> equal_range(const Key &key)
+		{
+			return _tree.equal_range(key);
+		}
 
 		ft::pair<const_iterator, const_iterator>
-		equal_range(const Key &key) const;
+		equal_range(const Key &key) const
+		{
+			return _tree.equal_range(key);
+		}
 
 		// Observers //
 
-		key_compare key_comp(void) const;
+		key_compare key_comp(void) const
+		{
+			return _comp;
+		}
 
-		value_compare value_comp(void) const;
+		value_compare value_comp(void) const
+		{
+			return _comp;
+		}
 
 	private:
 		_rb_tree<value_type, value_compare> _tree;
@@ -154,27 +259,56 @@ namespace ft
 
 	template <class Key, class Compare, class Alloc>
 	bool operator==(const ft::set<Key, Compare, Alloc> &lhs,
-					const ft::set<Key, Compare, Alloc> &rhs);
+					const ft::set<Key, Compare, Alloc> &rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return false;
+		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+	}
 
 	template <class Key, class Compare, class Alloc>
 	bool operator!=(const ft::set<Key, Compare, Alloc> &lhs,
-					const ft::set<Key, Compare, Alloc> &rhs);
-					
+					const ft::set<Key, Compare, Alloc> &rhs)
+	{
+		return !(lhs == rhs);
+	}
+
 	template <class Key, class Compare, class Alloc>
 	bool operator<(const ft::set<Key, Compare, Alloc> &lhs,
-				   const ft::set<Key, Compare, Alloc> &rhs);
+				   const ft::set<Key, Compare, Alloc> &rhs)
+	{
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(),
+											rhs.begin(), rhs.end()));
+	}
 
 	template <class Key, class Compare, class Alloc>
 	bool operator<=(const ft::set<Key, Compare, Alloc> &lhs,
-					const ft::set<Key, Compare, Alloc> &rhs);
+					const ft::set<Key, Compare, Alloc> &rhs)
+	{
+		return (lhs == rhs || lhs < rhs);
+	}
 
 	template <class Key, class Compare, class Alloc>
 	bool operator>(const ft::set<Key, Compare, Alloc> &lhs,
-				   const ft::set<Key, Compare, Alloc> &rhs);
+				   const ft::set<Key, Compare, Alloc> &rhs)
+	{
+		return (rhs < lhs);
+	}
 
 	template <class Key, class Compare, class Alloc>
 	bool operator>=(const ft::set<Key, Compare, Alloc> &lhs,
-					const ft::set<Key, Compare, Alloc> &rhs);
+					const ft::set<Key, Compare, Alloc> &rhs)
+	{
+		return (rhs == lhs || rhs < lhs);
+	}
+
+	template <class Key, class Compare, class Alloc>
+
+	void swap(ft::set<Key, Compare, Alloc> &lhs,
+			  ft::set<Key, Compare, Alloc> &rhs)
+	{
+		lhs.swap(rhs);
+	}
 }
 
 #endif
