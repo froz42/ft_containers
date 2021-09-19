@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:53:40 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 14:13:21 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 15:56:17 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ namespace ft
 						const allocator_type &alloc = allocator_type())
 			: _alloc(alloc), _size(0), _capacity(0), _data(NULL)
 		{
-			this->reserve(n);
-			this->_size = n;
-			this->_capacity = n;
+			reserve(n);
+			_size = n;
+			_capacity = n;
 			for (size_type i = 0; i < n; i++)
 				_alloc.construct(&_data[i], val);
 		}
@@ -66,10 +66,10 @@ namespace ft
 			: _alloc(alloc), _size(0), _capacity(0), _data(NULL)
 		{
 			size_type n = std::distance(first, last);
-			this->reserve(n);
-			this->_size = n;
-			this->_capacity = n;
-			for (size_type i = 0; i < this->_size; i++)
+			reserve(n);
+			_size = n;
+			_capacity = n;
+			for (size_type i = 0; i < _size; i++)
 				_alloc.construct(&_data[i], *(first + i));
 		}
 
@@ -77,7 +77,7 @@ namespace ft
 		{
 			if (x._data)
 			{
-				this->_data = _alloc.allocate(_capacity);
+				_data = _alloc.allocate(_capacity);
 				for (size_type i = 0; i < _size; i++)
 					_alloc.construct(&_data[i], x._data[i]);
 			}
@@ -86,7 +86,7 @@ namespace ft
 		// Destructor
 		~vector(void)
 		{
-			this->clear();
+			clear();
 			if (_data)
 				_alloc.deallocate(_data, _capacity);
 		};
@@ -95,20 +95,20 @@ namespace ft
 		{
 			if (this != &x)
 			{
-				this->clear();
-				if (this->_capacity < x._size)
-					this->reserve(x._size);
-				this->_size = x._size;
-				if (this->_data)
-					_alloc.deallocate(this->_data, this->_capacity);
+				clear();
+				if (_capacity < x._size)
+					reserve(x._size);
+				_size = x._size;
+				if (_data)
+					_alloc.deallocate(_data, _capacity);
 				if (x._data)
 				{
-					this->_data = _alloc.allocate(_capacity);
+					_data = _alloc.allocate(_capacity);
 					for (size_type i = 0; i < _size; i++)
 					_alloc.construct(&_data[i], x._data[i]);
 				}
 				else
-					this->_data = NULL;
+					_data = NULL;
 			}
 			return *this;
 		}
@@ -175,7 +175,7 @@ namespace ft
 
 		void reserve(size_type n)
 		{
-			if (n > this->max_size())
+			if (n > max_size())
 				throw std::length_error("n greater than vector::max_size()");
 			if (n > _capacity)
 			{
@@ -195,7 +195,7 @@ namespace ft
 		void resize(size_type n, value_type val = value_type())
 		{
 			if (n > _capacity)
-				this->reserve(n);
+				reserve(n);
 			if (n > _size)
 			{
 				for (size_type i = _size; i < n; i++)
@@ -249,7 +249,7 @@ namespace ft
 		void push_back(const value_type &val)
 		{
 			if (_size == _capacity)
-				this->_extend();
+				_extend();
 			_alloc.construct(&_data[_size], val);
 			_size++;
 		}
@@ -274,8 +274,8 @@ namespace ft
 			size_type i = &*position - &*begin();
 
 			if (_size == _capacity)
-				this->_extend();
-			this->_shift_right(i, 1);
+				_extend();
+			_shift_right(i, 1);
 			_alloc.construct(&_data[i], val);
 			_size++;
 			return iterator(&_data[i]);
@@ -286,8 +286,8 @@ namespace ft
 			size_type i = &*position - &*begin();
 
 			if (_size + n > _capacity)
-				this->reserve(_size + n);
-			this->_shift_right(i, n);
+				reserve(_size + n);
+			_shift_right(i, n);
 			for (size_type j = 0; j < n; j++)
 				_alloc.construct(&_data[i + j], val);
 			_size += n;
@@ -301,8 +301,8 @@ namespace ft
 			size_type n = std::distance(first, last);
 
 			if (_size + n > _capacity)
-				this->reserve(_size + n);
-			this->_shift_right(i, n);
+				reserve(_size + n);
+			_shift_right(i, n);
 			for (size_type j = 0; j < n; j++)
 				_alloc.construct(&_data[i + j], *(first + j));
 			_size += n;
@@ -313,7 +313,7 @@ namespace ft
 			size_type i = &*position - &*begin();
 
 			_alloc.destroy(&_data[i]);
-			this->_shift_left(i, 1);
+			_shift_left(i, 1);
 			_size--;
 			return iterator(&_data[i]);			
 		}
@@ -325,7 +325,7 @@ namespace ft
 
 			for (size_type k = i; k < j; k++)
 				_alloc.destroy(&_data[k]);
-			this->_shift_left(i, j - i);
+			_shift_left(i, j - i);
 			_size -= j - i;
 			return iterator(&_data[i]);
 		}
@@ -336,23 +336,23 @@ namespace ft
 		{
 			size_type n = std::distance(first, last);
 			if (n > _capacity)
-				this->reserve(n);
+				reserve(n);
 			for (size_type i = 0; i < _size; i++)
 				_alloc.destroy(&_data[i]);
 			for (size_type i = 0; i < n; i++)
 				_alloc.construct(&_data[i], *first++);
-			this->_size = n;
+			_size = n;
 		}
 		
 		void assign(size_type n, const value_type &val)
 		{
 			if (n > _capacity)
-				this->reserve(n);
+				reserve(n);
 			for (size_type i = 0; i < _size; i++)
 				_alloc.destroy(&_data[i]);
 			for (size_type i = 0; i < n; i++)
 				_alloc.construct(&_data[i], val);
-			this->_size = n;
+			_size = n;
 		}
 
 		allocator_type get_allocator() const
@@ -369,17 +369,17 @@ namespace ft
 		void _extend(void)
 		{
 			if (_capacity == 0)
-				this->reserve(1);
+				reserve(1);
 			else
 			{
 				size_type new_capacity = _capacity * 2;
-				this->reserve(new_capacity);
+				reserve(new_capacity);
 			}
 		}
 		void _extend(size_type n)
 		{
 			size_type new_capacity = _capacity + n;
-			this->reserve(new_capacity);
+			reserve(new_capacity);
 		}
 		void _shift_right(size_type position, size_type n)
 		{

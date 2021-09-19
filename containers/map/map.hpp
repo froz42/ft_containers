@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 12:34:25 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 14:13:44 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 15:55:22 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,37 +72,37 @@ namespace ft
 					 const allocator_type &alloc = allocator_type())
 			: _tree()
 		{
-			this->_allocator = alloc;
-			this->_key_comp = comp;
-			this->_value_comp = value_compare();
+			_allocator = alloc;
+			_key_comp = comp;
+			_value_comp = value_compare();
 		}
 
 		template <class InputIt>
 		map(InputIt first, InputIt last, const Compare &comp = Compare(),
 			const Allocator &alloc = Allocator()) : _tree()
 		{
-			this->_allocator = alloc;
-			this->_key_comp = comp;
-			this->_value_comp = value_compare();
-			this->insert(first, last);
+			_allocator = alloc;
+			_key_comp = comp;
+			_value_comp = value_compare();
+			insert(first, last);
 		}
 
 		map(const map &other)
 		{
-			this->_allocator = other._allocator;
-			this->_key_comp = other._key_comp;
-			this->_value_comp = other._value_comp;
-			this->_tree = other._tree;
+			_allocator = other._allocator;
+			_key_comp = other._key_comp;
+			_value_comp = other._value_comp;
+			_tree = other._tree;
 		}
 
 		~map(void) {}
 
 		map &operator=(const map &other)
 		{
-			this->_allocator = other._allocator;
-			this->_key_comp = other._key_comp;
-			this->_value_comp = other._value_comp;
-			this->_tree = other._tree;
+			_allocator = other._allocator;
+			_key_comp = other._key_comp;
+			_value_comp = other._value_comp;
+			_tree = other._tree;
 			return *this;
 		}
 
@@ -149,107 +149,107 @@ namespace ft
 
 		iterator begin(void)
 		{
-			return (this->_tree.begin());
+			return (_tree.begin());
 		}
 
 		const_iterator begin(void) const
 		{
-			return (this->_tree.begin());
+			return (_tree.begin());
 		}
 
 		iterator end(void)
 		{
-			return (this->_tree.end());
+			return (_tree.end());
 		}
 
 		const_iterator end(void) const
 		{
-			return (this->_tree.end());
+			return (_tree.end());
 		}
 
 		reverse_iterator rbegin(void)
 		{
-			return (this->_tree.rbegin());
+			return (_tree.rbegin());
 		}
 
 		const_reverse_iterator rbegin(void) const
 		{
-			return (this->_tree.rbegin());
+			return (_tree.rbegin());
 		}
 
 		reverse_iterator rend(void)
 		{
-			return (this->_tree.rend());
+			return (_tree.rend());
 		}
 
 		const_reverse_iterator rend(void) const
 		{
-			return (this->_tree.rend());
+			return (_tree.rend());
 		}
 
 		// capacity //
 
 		bool empty(void) const
 		{
-			return (this->_tree.size() == 0);
+			return (_tree.size() == 0);
 		}
 
 		size_type size(void) const
 		{
-			return (this->_tree.size());
+			return (_tree.size());
 		}
 
 		size_type max_size(void) const
 		{
-			return (this->_tree.max_size());
+			return (_tree.max_size());
 		}
 
 		// modifiers //
 
 		void clear(void)
 		{
-			this->_tree.clear();
+			_tree.clear();
 		}
 
 		ft::pair<iterator, bool> insert(const value_type &value)
 		{
-			return (this->_tree.insert(value));
+			return (_tree.insert(value));
 		}
 
 		template <class InputIt>
 		void insert(InputIt first, InputIt last)
 		{
 			for (; first != last; ++first)
-				this->_tree.insert(*first);
+				_tree.insert(*first);
 		}
 
 		iterator insert(iterator hint, const value_type &value)
 		{
-			return (this->_tree.insert(hint, value));
+			return (_tree.insert(hint, value));
 		}
 
 		void erase(iterator pos)
 		{
-			this->_tree.erase(pos);
+			_tree.erase(pos);
 		}
 
 		void erase(iterator first, iterator last)
 		{
 			while (first != last)
-				this->_tree.erase(first++);
+				_tree.erase(first++);
 		}
 
 		size_type erase(const key_type &key)
 		{
-			return (this->_tree.erase(ft::make_pair(key, mapped_type())));
+			return (_tree.erase(ft::make_pair(key, mapped_type())));
 		}
 
 		void swap(map &other)
 		{
-			std::swap(this->_allocator, other._allocator);
-			std::swap(this->_key_comp, other._key_comp);
-			std::swap(this->_value_comp, other._value_comp);
-			this->_tree.swap(other._tree);
+			std::swap(_allocator, other._allocator);
+			std::swap(_key_comp, other._key_comp);
+			std::swap(_value_comp, other._value_comp);
+			_tree.swap(other._tree);
 		}
 
 		// lookups //

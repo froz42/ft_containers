@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 21:33:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 13:53:52 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 15:55:49 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,37 +59,37 @@ namespace ft
 		// constructors
 		_rb_tree(allocator allocator_ = allocator()) : _compare(compare()), _size(0)
 		{
-			this->_allocator = allocator_;
+			_allocator = allocator_;
 
-			this->NIL = _allocator.allocate(1);
-			_allocator.construct(this->NIL, value_type());
+			NIL = _allocator.allocate(1);
+			_allocator.construct(NIL, value_type());
 			NIL->parent = NIL;
 			NIL->left = NIL;
 			NIL->right = NIL;
 			NIL->color = BLACK;
-			this->root = NIL;
+			root = NIL;
 		}
 
 		_rb_tree(_rb_tree const &other)
 		{
-			this->_allocator = other._allocator;
-			this->_compare = other._compare;
-			this->_size = other._size;
-			this->NIL = _allocator.allocate(1);
+			_allocator = other._allocator;
+			_compare = other._compare;
+			_size = other._size;
+			NIL = _allocator.allocate(1);
 			NIL->parent = NIL;
 			NIL->left = NIL;
 			NIL->right = NIL;
 			NIL->color = BLACK;
 
-			this->root = NIL;
+			root = NIL;
 			other.print();
 			_recursive_copy(*this, other.root, other.NIL);
 		}
 
 		~_rb_tree()
 		{
-			this->clear();
-			_allocator.destroy(this->NIL);
+			clear();
+			_allocator.destroy(NIL);
 			_allocator.deallocate(NIL, 1);
 		}
 
@@ -116,31 +116,31 @@ namespace ft
 
 		reverse_iterator rbegin()
 		{
-			iterator it = this->end();
+			iterator it = end();
 			return reverse_iterator(it);
 		}
 
 		const_reverse_iterator rbegin() const
 		{
-			const_iterator it = this->end();
+			const_iterator it = end();
 			return const_reverse_iterator(it);
 		}
 
 		reverse_iterator rend()
 		{
-			iterator it = this->begin();
+			iterator it = begin();
 			return reverse_iterator(it);
 		}
 
 		const_reverse_iterator rend() const
 		{
-			const_iterator it = this->begin();
+			const_iterator it = begin();
 			return const_reverse_iterator(it);
 		}
 
 		_rb_tree &operator=(_rb_tree const &other)
 		{
-			this->clear();
+			clear();
 			_recursive_copy(*this, other.root, other.NIL);
 			return *this;
 		}
@@ -169,26 +169,26 @@ namespace ft
 		{
 			node_ptr n = _new_node(value);
 
-			ft::pair<node_ptr, bool> r = _insert_recursive(this->root, n);
+			ft::pair<node_ptr, bool> r = _insert_recursive(root, n);
 
 			if (r.second)
 			{
-				this->_size++;
+				_size++;
 				if (n->parent == NIL)
 					n->color = BLACK;
 				else
 					_insert_fixup(n);
 				//search for new root
-				this->root = n;
-				while (this->root->parent != NIL)
-					this->root = this->root->parent;
-				return ft::make_pair(iterator(n, this->root, NIL), true);
+				root = n;
+				while (root->parent != NIL)
+					root = root->parent;
+				return ft::make_pair(iterator(n, root, NIL), true);
 			}
 			else
 			{
 				_allocator.destroy(n);
 				_allocator.deallocate(n, 1);
-				return ft::make_pair(iterator(r.first, this->root, NIL), false);
+				return ft::make_pair(iterator(r.first, root, NIL), false);
 			}
 		}
 
@@ -204,7 +204,7 @@ namespace ft
 
 				ft::pair<node_ptr, bool> r = _insert_recursive(hint.node, n);
 				_size++;
-				return iterator(r.first, this->root, NIL);
+				return iterator(r.first, root, NIL);
 			}
 			else
 				return insert(value).first;
@@ -231,9 +231,9 @@ namespace ft
 
 		void clear()
 		{
-			_recursive_clear(this->root);
-			this->root = NIL;
-			this->_size = 0;
+			_recursive_clear(root);
+			root = NIL;
+			_size = 0;
 		}
 
 		size_type size() const
@@ -248,59 +248,59 @@ namespace ft
 
 		void swap(_rb_tree &other)
 		{
-			std::swap(this->_allocator, other._allocator);
-			std::swap(this->_compare, other._compare);
-			std::swap(this->_size, other._size);
-			std::swap(this->NIL, other.NIL);
-			std::swap(this->root, other.root);
+			std::swap(_allocator, other._allocator);
+			std::swap(_compare, other._compare);
+			std::swap(_size, other._size);
+			std::swap(NIL, other.NIL);
+			std::swap(root, other.root);
 		}
 
 		iterator lower_bound(const value_type &value)
 		{
-			for (iterator it = this->begin(); it != this->end(); ++it)
+			for (iterator it = begin(); it != end(); ++it)
 			{
 				if (_compare(value, it.node->data)
 					|| _compare(it.node->data, value) == 0)
 					return it;
 			}
-			return this->end();
+			return end();
 		}
 
 		const_iterator lower_bound(const value_type &value) const
 		{
-			for (iterator it = this->begin(); it != this->end(); ++it)
+			for (iterator it = begin(); it != end(); ++it)
 			{
 				if (_compare(value, it.node->data)
 					|| _compare(it.node->data, value) == 0)
 					return it;
 			}
-			return this->end();
+			return end();
 		}
 
 		iterator upper_bound(const value_type &value)
 		{
-			for (iterator it = this->begin(); it != this->end(); ++it)
+			for (iterator it = begin(); it != end(); ++it)
 			{
 				if (_compare(value, it.node->data))
 					return it;
 			}
-			return this->end();
+			return end();
 		}
 
 		const_iterator upper_bound(const value_type &value) const
 		{
-			for (iterator it = this->begin(); it != this->end(); ++it)
+			for (iterator it = begin(); it != end(); ++it)
 			{
 				if (_compare(value, it.node->data))
 					return it;
 			}
-			return this->end();
+			return end();
 		}
 
 		void print(node *p = NULL, int indent = 0) const
 		{
 			if (p == NULL)
-				p = this->root;
+				p = root;
 			if (p != NIL)
 			{
 				if (p->right != NIL)
@@ -374,7 +374,7 @@ namespace ft
 				y->left->parent = x;
 			y->parent = x->parent;
 			if (x->parent == NIL)
-				this->root = y;
+				root = y;
 			else if (x == x->parent->left)
 				x->parent->left = y;
 			else
@@ -392,7 +392,7 @@ namespace ft
 				y->right->parent = x;
 			y->parent = x->parent;
 			if (x->parent == NIL)
-				this->root = y;
+				root = y;
 			else if (x == x->parent->right)
 				x->parent->right = y;
 			else
@@ -487,12 +487,12 @@ namespace ft
 
 		node_ptr _find_node(value_type const &data) const
 		{
-			node_ptr current = this->root;
+			node_ptr current = root;
 			while (current != NIL)
 			{
-				if (this->_compare(data, current->data))
+				if (_compare(data, current->data))
 					current = current->left;
-				else if (this->_compare(current->data, data))
+				else if (_compare(current->data, data))
 					current = current->right;
 				else
 					return current;
@@ -503,7 +503,7 @@ namespace ft
 		void _transplant(node_ptr u, node_ptr v)
 		{
 			if (u->parent == NIL)
-				this->root = v;
+				root = v;
 			else if (u == u->parent->left)
 				u->parent->left = v;
 			else
@@ -639,7 +639,7 @@ namespace ft
 		void _recursive_clear(node_ptr x = NULL)
 		{
 			if (x == NULL)
-				x = this->root;
+				x = root;
 			if (x != NIL)
 			{
 				_recursive_clear(x->left);

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 02:29:40 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/11 12:56:19 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 15:56:09 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,32 +58,32 @@ namespace ft
 		
 		bool empty(void) const
 		{
-			return (this->c.empty());
+			return (c.empty());
 		}
 
 		size_type size(void) const
 		{
-			return (this->c.size());
+			return (c.size());
 		}
 
 		value_type &top(void)
 		{
-			return (this->c.back());
+			return (c.back());
 		}
 
 		const value_type &top(void) const
 		{
-			return (this->c.back());
+			return (c.back());
 		}
 
 		void push(const value_type &val)
 		{
-			this->c.push_back(val);
+			c.push_back(val);
 		}
 
 		void pop(void)
 		{
-			this->c.pop_back();
+			c.pop_back();
 		}
 
 	protected:
