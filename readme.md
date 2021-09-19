@@ -12,5 +12,5 @@
 
 # map
 
- - [ ] done
- - [ ] tested
+ - [x] done
+ - [x] tested
