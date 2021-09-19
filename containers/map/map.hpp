@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 12:34:25 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 12:27:30 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 12:51:30 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,13 +233,14 @@ namespace ft
 
 		void erase(iterator first, iterator last)
 		{
-			for (; first != last; ++first)
-				this->_tree.erase(first);
+			while (first != last)
+				this->_tree.erase(first++);
+			
 		}
 
 		size_type erase(const key_type &key)
 		{
-			return (this->_tree.erase(key));
+			return (this->_tree.erase(ft::make_pair(key, mapped_type())));
 		}
 
 		void swap(map &other)

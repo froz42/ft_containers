@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 17:12:49 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 12:39:52 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 12:53:40 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,6 +330,77 @@ static void test_clear(void)
 	module_foot();
 }
 
+static void test_erase(void)
+{
+	TESTED_NAMESPACE::map<std::string, int> m1;
+
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test1"), 1));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test2"), 2));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test3"), 3));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test4"), 4));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test5"), 5));
+
+	module_head("map::erase(key) (not found)");
+	std::cout << m1.erase("test6") << std::endl;
+	std::cout << string_map(m1) << std::endl;
+	module_foot();
+	module_head("map::erase(key) (found)");
+	std::cout << m1.erase("test1") << std::endl;
+	std::cout << string_map(m1) << std::endl;
+	std::cout << m1.erase("test2") << std::endl;
+	std::cout << string_map(m1) << std::endl;
+	std::cout << m1.erase("test3") << std::endl;
+	std::cout << string_map(m1) << std::endl;
+	std::cout << m1.erase("test4") << std::endl;
+	std::cout << string_map(m1) << std::endl;
+	std::cout << m1.erase("test5") << std::endl;
+	std::cout << string_map(m1) << std::endl;
+	module_foot();
+
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test1"), 1));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test2"), 2));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test3"), 3));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test4"), 4));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test5"), 5));
+
+	module_head("map::erase(iterator)");
+	TESTED_NAMESPACE::map<std::string, int>::iterator it = m1.begin();
+	m1.erase(it);
+	std::cout << string_map(m1) << std::endl;
+	it = m1.begin();
+	it++;
+	m1.erase(it);
+	std::cout << string_map(m1) << std::endl;
+	module_foot();
+
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test1"), 1));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test2"), 2));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test3"), 3));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test4"), 4));
+	m1.insert(TESTED_NAMESPACE::make_pair(static_cast<std::string>("test5"), 5));
+
+	module_head("map::erase(it, it)");
+	m1.erase(m1.begin(), m1.end());
+	std::cout << string_map(m1) << std::endl;
+	module_foot();
+
+	TESTED_NAMESPACE::map<std::string, int> m3;
+	for (int i = 0; i < 10000; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		m3.insert(TESTED_NAMESPACE::make_pair(ss.str(), i));
+	}
+	module_head("map::erase (time)");
+	for (int i = 0; i < 10000; ++i)
+	{
+		std::ostringstream ss;
+		ss << "test" << i;
+		m3.erase(ss.str());
+	}
+	module_foot();
+}
+
 void test_map(void)
 {
 	test_constructor();
@@ -340,4 +411,5 @@ void test_map(void)
 	test_access_operator();
 	test_at();
 	test_clear();
+	test_erase();
 }
