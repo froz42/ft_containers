@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 14:53:40 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 13:28:50 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 14:13:21 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -425,15 +425,7 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		if (lhs == rhs)
-			return true;
-		return (lhs < rhs);
-	}
-
-	template <class T>
-	static bool mycomp(const T &lhs, const T &rhs)
-	{
-		return (lhs > rhs);
+		return ((lhs == rhs) || (lhs < rhs));
 	}
 
 	template <class T, class Alloc>
@@ -445,9 +437,7 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		if (lhs == rhs)
-			return true;
-		return (lhs > rhs);
+		return ((lhs == rhs) || (lhs > rhs));
 	}
 
 	template <class T, class Alloc>
