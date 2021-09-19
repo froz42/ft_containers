@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 12:34:25 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/19 16:08:00 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 16:11:43 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ namespace ft
 			return *this;
 		}
 
-		allocator_type get_alloc() const
+		allocator_type get_allocator() const
 		{
 			return (_alloc);
 		}
