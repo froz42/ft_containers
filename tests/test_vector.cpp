@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 13:23:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/09/18 13:26:46 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/09/19 14:03:08 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -434,7 +434,7 @@ void test_insert()
 	TESTED_NAMESPACE::vector<int> v3(5, 5);
 
 	module_head("vector::insert (time)");
-	for (int i = 0; i < 500; i++)
+	for (int i = 0; i < 100; i++)
 		v2.insert(v2.begin() + 3, i);
 	module_foot();
 	module_head("vector::insert (iterator, value) (content)");
